@@ -1,0 +1,17 @@
+npm notice run kaku-books@0.1.0 dev
+npm notice run next dev
+▲ Next.js 16.3.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.28.0.166:3000
+- Environments: .env.local
+✓ Ready in 316ms
+✓ Running next.config.ts took 30ms
+
+ GET / 200 in 1735ms (next.js: 1611ms, application-code: 125ms)
+ GET / 200 in 47ms (next.js: 7ms, application-code: 40ms)
+ GET / 200 in 63ms (next.js: 8ms, application-code: 55ms)
+ GET / 200 in 52ms (next.js: 7ms, application-code: 45ms)
+ GET / 200 in 138ms (next.js: 100ms, application-code: 38ms)
+ GET / 200 in 81ms (next.js: 4ms, application-code: 77ms)
+ GET / 200 in 287ms (next.js: 48ms, application-code: 239ms)
+ GET / 200 in 163ms (next.js: 16ms, application-code: 147ms)
