@@ -1,0 +1,85 @@
+npm notice run kaku-books@0.1.0 dev
+npm notice run next dev
+▲ Next.js 16.3.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.28.0.166:3000
+- Environments: .env.local
+✓ Ready in 829ms
+✓ Running next.config.ts took 103ms
+
+⨯ Error: Invalid src prop (https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook) on `next/image`, hostname "placehold.co" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at ignore-listed frames {
+  digest: '537109302@E231'
+}
+ GET / 500 in 3.5s (next.js: 747ms, application-code: 2.7s)
+[browser] Error: Invalid src prop (https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook) on `next/image`, hostname "placehold.co" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at Array.map (<anonymous>) (../../../C:/tam/kaku-books/src/app/error.tsx:14:13)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+▲ Next.js 16.3.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.28.0.166:3000
+- Environments: .env.local
+✓ Ready in 1510ms
+✓ Running next.config.ts took 132ms
+
+ GET / 200 in 3.2s (next.js: 872ms, application-code: 2.3s)
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=sword-art-online-vol-27" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=sword-art-online-vol-27" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=attack-on-titan-tap-34" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=tower-of-god-season-3" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=tower-of-god-season-3" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=berserk-tap-42" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=berserk-tap-42" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=rezero-vol-35" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=chainsaw-man-tap-15" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=demon-slayer-tap-23" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⨯ The requested resource "https://placehold.co/400x600/1a1a2e/gold?text=jujutsu-kaisen-tap-26" has type "image/svg+xml" but dangerouslyAllowSVG is disabled. Consider adding the "unoptimized" property to the <Image>.
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+▲ Next.js 16.3.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.28.0.166:3000
+- Environments: .env.local
+✓ Ready in 927ms
+✓ Running next.config.ts took 78ms
+
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+▲ Next.js 16.3.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.28.0.166:3000
+- Environments: .env.local
+✓ Ready in 1059ms
+✓ Running next.config.ts took 69ms
+
+ GET / 200 in 3.6s (next.js: 561ms, application-code: 3.1s)
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=sword-art-online-vol-27" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=tower-of-god-season-3" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=berserk-tap-42" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+○ Compiling /admin/login ...
+ GET /admin/login?from=%2Fadmin 307 in 4.5s (next.js: 4.1s, proxy.ts: 7ms, application-code: 375ms)
+ GET /admin/login 307 in 147ms (next.js: 19ms, proxy.ts: 7ms, application-code: 121ms)
+ GET /admin/login 307 in 170ms (next.js: 43ms, proxy.ts: 27ms, application-code: 101ms)
+ GET /admin/login 307 in 130ms (next.js: 16ms, proxy.ts: 6ms, application-code: 107ms)
+ GET /admin/login 307 in 119ms (next.js: 10ms, proxy.ts: 7ms, application-code: 102ms)
+ GET /admin/login 307 in 119ms (next.js: 27ms, proxy.ts: 6ms, application-code: 86ms)
+ GET /admin/login 307 in 139ms (next.js: 39ms, proxy.ts: 5ms, application-code: 94ms)
+ GET /admin/login 307 in 247ms (next.js: 98ms, proxy.ts: 41ms, application-code: 108ms)
+ GET /admin/login 307 in 165ms (next.js: 39ms, proxy.ts: 6ms, application-code: 120ms)
+ GET /admin/login 307 in 138ms (next.js: 19ms, proxy.ts: 7ms, application-code: 112ms)
+ GET /admin/login 307 in 92ms (next.js: 9ms, proxy.ts: 5ms, application-code: 78ms)
+ GET /admin/login 307 in 129ms (next.js: 13ms, proxy.ts: 7ms, application-code: 109ms)
+ GET /admin/login 307 in 138ms (next.js: 26ms, proxy.ts: 7ms, application-code: 105ms)
+ GET /admin/login 307 in 115ms (next.js: 10ms, proxy.ts: 10ms, application-code: 95ms)
+ GET /admin/login 307 in 103ms (next.js: 17ms, proxy.ts: 5ms, application-code: 82ms)
+ GET /admin/login 307 in 102ms (next.js: 13ms, proxy.ts: 5ms, application-code: 84ms)
+ GET /admin/login 307 in 129ms (next.js: 20ms, proxy.ts: 5ms, application-code: 104ms)
+ GET /admin/login 307 in 113ms (next.js: 15ms, proxy.ts: 5ms, application-code: 93ms)
+ GET /admin/login 307 in 109ms (next.js: 11ms, proxy.ts: 6ms, application-code: 92ms)
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=tower-of-god-season-3" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=berserk-tap-42" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=sword-art-online-vol-27" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
