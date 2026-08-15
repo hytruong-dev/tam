@@ -83,3 +83,19 @@ See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
 [browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=tower-of-god-season-3" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
 [browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=berserk-tap-42" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
 [browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=sword-art-online-vol-27" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /products/nier-automata-artbook 200 in 2.8s (next.js: 1142ms, application-code: 1670ms)
+ GET / 200 in 1267ms (next.js: 7ms, application-code: 1260ms)
+ GET /products?category=truyen-tranh 200 in 1176ms (next.js: 495ms, application-code: 681ms)
+ GET /products?category=tieu-thuyet 200 in 407ms (next.js: 2ms, application-code: 405ms)
+[browser] Base UI: A component is changing the default value state of an uncontrolled Select after being initialized. To suppress this warning opt to use a controlled Select. 
+ GET / 200 in 2.0s (next.js: 7ms, application-code: 2.0s)
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=nier-automata-artbook" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=tower-of-god-season-3" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=berserk-tap-42" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "https://placehold.co/400x600/1a1a2e/gold?text=sword-art-online-vol-27" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /products?category=truyen-tranh 200 in 443ms (next.js: 12ms, application-code: 431ms)
+ GET /products?category=truyen-tranh 200 in 435ms (next.js: 4ms, application-code: 431ms)
+ GET /products?category=tieu-thuyet 200 in 464ms (next.js: 4ms, application-code: 460ms)
+[browser] Base UI: A component is changing the default value state of an uncontrolled Select after being initialized. To suppress this warning opt to use a controlled Select. 
+ GET / 200 in 475ms (next.js: 4ms, application-code: 471ms)
+ GET / 200 in 1342ms (next.js: 19ms, application-code: 1323ms)

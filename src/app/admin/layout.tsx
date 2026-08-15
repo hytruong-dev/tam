@@ -1,8 +1,5 @@
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/auth/session";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 
 export default async function AdminLayout({
@@ -10,11 +7,6 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const authenticated = await isAdminAuthenticated();
-  if (!authenticated) {
-    redirect("/admin/login");
-  }
-
   return (
     <div className="min-h-screen bg-[#F8F7F5]">
       <AdminHeader />
