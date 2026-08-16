@@ -11,7 +11,7 @@ import { productQuerySchema } from "@/lib/validations/product";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Tất cả sản phẩm",
+  title: "Mô hình & Figure | Kaku",
 };
 
 interface ProductsPageProps {

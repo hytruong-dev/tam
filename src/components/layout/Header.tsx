@@ -1,22 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { Menu, Search, X, BookOpen } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useRef } from "react";
+import { Menu, Search, X, Tv } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Trang chủ" },
-  { href: "/products?category=truyen-tranh", label: "Truyện tranh" },
-  { href: "/products?category=tieu-thuyet", label: "Tiểu thuyết" },
-  { href: "/products", label: "Bộ sưu tập" },
+  { href: "/", label: "Trang chủ", match: (p: string) => p === "/" },
+  { href: "/products", label: "Mô hình", match: (p: string) => p === "/products" },
+  { href: "/videos", label: "Video", match: (p: string) => p === "/videos" },
+  { href: "/products?sort=newest", label: "Bộ sưu tập", match: (_p: string) => false },
 ];
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = searchRef.current?.value.trim();
+    if (q) {
+      router.push(`/products?q=${encodeURIComponent(q)}`);
+    }
+    setSearchOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-charcoal text-white shadow-md">
@@ -27,19 +38,19 @@ export function Header() {
             href="/"
             className="flex items-center gap-2 text-white font-heading text-xl font-bold tracking-wide hover:text-gold transition-colors"
           >
-            <BookOpen className="w-6 h-6 text-gold" />
-            <span>KAKU BOOKS</span>
+            <Tv className="w-6 h-6 text-gold" />
+            <span>KAKU</span>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className={cn(
                   "text-sm font-medium tracking-wide transition-colors hover:text-gold",
-                  pathname === link.href ? "text-gold border-b border-gold pb-0.5" : "text-white/80"
+                  link.match(pathname) ? "text-gold border-b border-gold pb-0.5" : "text-white/80"
                 )}
               >
                 {link.label}
@@ -50,19 +61,21 @@ export function Header() {
           {/* Right Actions */}
           <div className="flex items-center gap-4">
             {searchOpen ? (
-              <div className="flex items-center gap-2">
-                <form action="/products" method="get" className="flex items-center">
-                  <input
-                    autoFocus
-                    name="q"
-                    placeholder="Tìm truyện, tác giả..."
-                    className="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-gold w-48"
-                  />
-                </form>
-                <button onClick={() => setSearchOpen(false)} className="text-white/60 hover:text-white">
+              <form onSubmit={handleSearch} className="flex items-center gap-2">
+                <input
+                  ref={searchRef}
+                  autoFocus
+                  placeholder="Tìm mô hình, anime..."
+                  className="bg-white/10 border border-white/20 rounded px-3 py-1.5 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-gold w-48"
+                />
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(false)}
+                  className="text-white/60 hover:text-white"
+                >
                   <X className="w-5 h-5" />
                 </button>
-              </div>
+              </form>
             ) : (
               <button
                 onClick={() => setSearchOpen(true)}
@@ -86,12 +99,17 @@ export function Header() {
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 py-4 space-y-3">
+          <div className="md:hidden border-t border-white/10 py-4 space-y-1">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
-                className="block text-sm text-white/80 hover:text-gold py-2 transition-colors"
+                className={cn(
+                  "block text-sm py-2.5 px-2 rounded transition-colors",
+                  link.match(pathname)
+                    ? "text-gold bg-white/5"
+                    : "text-white/80 hover:text-gold hover:bg-white/5"
+                )}
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
