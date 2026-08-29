@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Tv } from "lucide-react";
+import { Box } from "lucide-react";
 
 export function Footer() {
   return (
@@ -9,11 +9,11 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 text-white font-heading text-lg font-bold mb-3">
-              <Tv className="w-5 h-5 text-gold" />
-              KAKU
+              <Box className="w-5 h-5 text-gold" />
+              ThienTam
             </Link>
             <p className="text-sm leading-relaxed">
-              Shop mô hình anime & figure chính hãng. Cập nhật video review mới nhất mỗi tuần.
+              ThienTam - Shop mô hình anime, figure chính hãng, video review và cộng đồng người sưu tầm.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/40">
-          <p>© 2024 Kaku. All rights reserved.</p>
+          <p>© 2026 ThienTam. All rights reserved.</p>
           <div className="flex gap-4">
             <span>VISA</span>
             <span>Mastercard</span>

@@ -1,16 +1,27 @@
 import { z } from "zod";
+import { ProductStatus } from "@prisma/client";
 
 export const productSchema = z.object({
   name: z
     .string()
-    .min(1, "Tên sản phẩm không được để trống")
-    .max(200, "Tên sản phẩm không được quá 200 ký tự"),
+    .min(1, "Tên mô hình không được để trống")
+    .max(200, "Tên mô hình không được quá 200 ký tự"),
   slug: z
     .string()
     .min(1, "Slug không được để trống")
     .max(200)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug chỉ gồm chữ thường, số và dấu gạch ngang"),
+  sku: z.string().max(100).optional().nullable(),
   author: z.string().max(100).optional().nullable(),
+  brand: z.string().max(100).optional().nullable(),
+  series: z.string().max(100).optional().nullable(),
+  scale: z.string().max(50).optional().nullable(),
+  material: z.string().max(100).optional().nullable(),
+  dimensions: z.string().max(100).optional().nullable(),
+  productStatus: z.nativeEnum(ProductStatus).default(ProductStatus.IN_STOCK),
+  preorderEndsAt: z.string().optional().nullable(),
+  seoTitle: z.string().max(150).optional().nullable(),
+  seoDescription: z.string().max(300).optional().nullable(),
   shortDescription: z
     .string()
     .min(1, "Mô tả ngắn không được để trống")
@@ -54,6 +65,12 @@ export const productUpdateSchema = productSchema.partial().required({
 export const productQuerySchema = z.object({
   q: z.string().max(100).optional(),
   category: z.string().max(100).optional(),
+  brand: z.string().max(100).optional(),
+  series: z.string().max(100).optional(),
+  scale: z.string().max(50).optional(),
+  status: z.nativeEnum(ProductStatus).optional(),
+  minPrice: z.coerce.number().min(0).optional(),
+  maxPrice: z.coerce.number().min(0).optional(),
   sort: z.enum(["newest", "price-asc", "price-desc"]).optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(48).default(12),

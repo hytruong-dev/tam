@@ -18,11 +18,11 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const metadata: Metadata = {
   title: {
-    default: "Kaku Books — Khám phá thế giới qua từng trang sách",
-    template: "%s | Kaku Books",
+    default: "ThienTam — Mô hình Figure chính hãng, Video Review & Cộng đồng Anime",
+    template: "%s | ThienTam",
   },
   description:
-    "Nhà sách trực tuyến chuyên về manga và tiểu thuyết đồ họa tuyển chọn.",
+    "ThienTam - Nền tảng chuyên mô hình anime, figure chính hãng, video unbox review kịch tính và cộng đồng đam mê sưu tầm.",
 };
 
 export default function RootLayout({

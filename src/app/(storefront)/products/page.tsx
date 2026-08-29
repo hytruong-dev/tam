@@ -11,7 +11,8 @@ import { productQuerySchema } from "@/lib/validations/product";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Mô hình & Figure | Kaku",
+  title: "Mô hình Figure chính hãng | ThienTam",
+  description: "Khám phá danh sách mô hình figure, Nendoroid, Gundam chính hãng tại ThienTam.",
 };
 
 interface ProductsPageProps {

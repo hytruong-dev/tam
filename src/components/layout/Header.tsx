@@ -2,23 +2,40 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useRef } from "react";
-import { Menu, Search, X, Tv } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Menu, Search, X, Box, User as UserIcon, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const navLinks = [
   { href: "/", label: "Trang chủ", match: (p: string) => p === "/" },
-  { href: "/products", label: "Mô hình", match: (p: string) => p === "/products" },
-  { href: "/videos", label: "Video", match: (p: string) => p === "/videos" },
-  { href: "/products?sort=newest", label: "Bộ sưu tập", match: (_p: string) => false },
+  { href: "/products", label: "Mô hình", match: (p: string) => p.startsWith("/products") },
+  { href: "/videos", label: "Video", match: (p: string) => p.startsWith("/videos") },
+  { href: "/community", label: "Cộng đồng", match: (p: string) => p.startsWith("/community") },
 ];
+
+interface UserProfile {
+  id: string;
+  displayName: string;
+  avatarUrl?: string | null;
+}
 
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch("/api/customer-auth/me")
+      .then((r) => r.json())
+      .then((json) => {
+        if (json.data) setUser(json.data);
+      })
+      .catch(() => setUser(null));
+  }, [pathname]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +44,14 @@ export function Header() {
       router.push(`/products?q=${encodeURIComponent(q)}`);
     }
     setSearchOpen(false);
+  };
+
+  const handleLogout = async () => {
+    await fetch("/api/customer-auth/logout", { method: "POST" });
+    setUser(null);
+    toast.success("Đã đăng xuất");
+    router.push("/");
+    router.refresh();
   };
 
   return (
@@ -38,8 +63,8 @@ export function Header() {
             href="/"
             className="flex items-center gap-2 text-white font-heading text-xl font-bold tracking-wide hover:text-gold transition-colors"
           >
-            <Tv className="w-6 h-6 text-gold" />
-            <span>KAKU</span>
+            <Box className="w-6 h-6 text-gold" />
+            <span>ThienTam</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -86,6 +111,41 @@ export function Header() {
               </button>
             )}
 
+            {/* Auth / Profile */}
+            {user ? (
+              <div className="hidden sm:flex items-center gap-3 border-l border-white/20 pl-4">
+                <img
+                  src={user.avatarUrl || "https://api.dicebear.com/7.x/bottts/svg?seed=user"}
+                  alt={user.displayName}
+                  className="w-7 h-7 rounded-full border border-gold object-cover"
+                />
+                <span className="text-xs font-semibold text-white/90">{user.displayName}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-white/50 hover:text-white text-xs ml-1"
+                  title="Đăng xuất"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <div className="hidden sm:flex items-center gap-2 border-l border-white/20 pl-4">
+                <Link
+                  href="/auth/login"
+                  className="text-xs font-semibold text-white/80 hover:text-gold transition-colors"
+                >
+                  Đăng nhập
+                </Link>
+                <span className="text-white/30 text-xs">/</span>
+                <Link
+                  href="/auth/register"
+                  className="text-xs font-semibold text-copper hover:text-white transition-colors"
+                >
+                  Đăng ký
+                </Link>
+              </div>
+            )}
+
             {/* Mobile menu button */}
             <button
               className="md:hidden text-white/70 hover:text-gold"
@@ -115,6 +175,26 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between px-2">
+              {user ? (
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-xs font-semibold text-gold">{user.displayName}</span>
+                  <button onClick={handleLogout} className="text-xs text-white/60 hover:text-white flex items-center gap-1">
+                    <LogOut className="w-3.5 h-3.5" /> Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-4 text-xs font-semibold">
+                  <Link href="/auth/login" className="text-white hover:text-gold">
+                    Đăng nhập
+                  </Link>
+                  <Link href="/auth/register" className="text-copper hover:text-white">
+                    Đăng ký
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

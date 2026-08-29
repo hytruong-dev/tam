@@ -44,42 +44,43 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
 
-  /* Kaku Books design tokens */
-  --color-charcoal: #121212;
-  --color-ivory: #F4EFE7;
-  --color-gold: #C6A15B;
+  /* ThienTam design tokens */
+  --color-charcoal: #0D1117;
+  --color-ivory: #F6F0E5;
+  --color-gold: #D8B26E;
+  --color-copper: #D66A3A;
   --color-burgundy: #6D1F2B;
-  --color-ink: #171717;
+  --color-ink: #1D232D;
 }
 
 :root {
-  --background: #F4EFE7;
-  --foreground: #171717;
+  --background: #F6F0E5;
+  --foreground: #1D232D;
   --card: #ffffff;
-  --card-foreground: #171717;
+  --card-foreground: #1D232D;
   --popover: #ffffff;
-  --popover-foreground: #171717;
-  --primary: #121212;
-  --primary-foreground: #F4EFE7;
-  --secondary: #F4EFE7;
-  --secondary-foreground: #171717;
-  --muted: #e8e2d9;
-  --muted-foreground: #6b6460;
-  --accent: #C6A15B;
-  --accent-foreground: #121212;
+  --popover-foreground: #1D232D;
+  --primary: #D66A3A;
+  --primary-foreground: #ffffff;
+  --secondary: #0D1117;
+  --secondary-foreground: #ffffff;
+  --muted: #EAE2D5;
+  --muted-foreground: #667085;
+  --accent: #D8B26E;
+  --accent-foreground: #0D1117;
   --destructive: #6D1F2B;
-  --border: #d6cfc5;
-  --input: #d6cfc5;
-  --ring: #C6A15B;
+  --border: #E2D9CB;
+  --input: #E2D9CB;
+  --ring: #D66A3A;
   --radius: 0.375rem;
-  --sidebar: #F4EFE7;
-  --sidebar-foreground: #171717;
-  --sidebar-primary: #121212;
-  --sidebar-primary-foreground: #F4EFE7;
-  --sidebar-accent: #e8e2d9;
-  --sidebar-accent-foreground: #171717;
-  --sidebar-border: #d6cfc5;
-  --sidebar-ring: #C6A15B;
+  --sidebar: #F6F0E5;
+  --sidebar-foreground: #1D232D;
+  --sidebar-primary: #D66A3A;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #EAE2D5;
+  --sidebar-accent-foreground: #1D232D;
+  --sidebar-border: #E2D9CB;
+  --sidebar-ring: #D66A3A;
 }
 
 @layer base {
@@ -103,25 +104,34 @@
     font-family: var(--font-body), "Be Vietnam Pro", sans-serif;
   }
   .text-gold {
-    color: #C6A15B;
+    color: #D8B26E;
+  }
+  .text-copper {
+    color: #D66A3A;
   }
   .text-burgundy {
     color: #6D1F2B;
   }
   .bg-charcoal {
-    background-color: #121212;
+    background-color: #0D1117;
   }
   .bg-ivory {
-    background-color: #F4EFE7;
+    background-color: #F6F0E5;
   }
   .bg-gold {
-    background-color: #C6A15B;
+    background-color: #D8B26E;
+  }
+  .bg-copper {
+    background-color: #D66A3A;
   }
   .bg-burgundy {
     background-color: #6D1F2B;
   }
   .border-gold {
-    border-color: #C6A15B;
+    border-color: #D8B26E;
+  }
+  .border-copper {
+    border-color: #D66A3A;
   }
   .product-card-img {
     aspect-ratio: 2 / 3;

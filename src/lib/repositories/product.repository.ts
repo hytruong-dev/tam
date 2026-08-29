@@ -3,14 +3,28 @@ import type { ProductQuery, ProductInput } from "@/lib/validations/product";
 import type { Prisma } from "@prisma/client";
 
 export type ProductWithCategory = Prisma.ProductGetPayload<{
-  include: { category: true };
+  include: { category: true; videoProducts: { include: { video: true } } };
 }>;
 
 export async function findProducts(
   query: ProductQuery,
   adminMode = false
 ): Promise<{ products: ProductWithCategory[]; total: number }> {
-  const { q, category, sort, page, limit, featured, isNew } = query;
+  const {
+    q,
+    category,
+    brand,
+    series,
+    scale,
+    status,
+    minPrice,
+    maxPrice,
+    sort,
+    page,
+    limit,
+    featured,
+    isNew,
+  } = query;
 
   const where: Prisma.ProductWhereInput = {};
 
@@ -23,10 +37,30 @@ export async function findProducts(
   if (isNew !== undefined) {
     where.isNew = isNew;
   }
+  if (status) {
+    where.productStatus = status;
+  }
+  if (brand) {
+    where.brand = { contains: brand, mode: "insensitive" };
+  }
+  if (series) {
+    where.series = { contains: series, mode: "insensitive" };
+  }
+  if (scale) {
+    where.scale = scale;
+  }
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    where.price = {
+      ...(minPrice !== undefined && { gte: minPrice }),
+      ...(maxPrice !== undefined && { lte: maxPrice }),
+    };
+  }
   if (q) {
     where.OR = [
       { name: { contains: q, mode: "insensitive" } },
-      { author: { contains: q, mode: "insensitive" } },
+      { brand: { contains: q, mode: "insensitive" } },
+      { series: { contains: q, mode: "insensitive" } },
+      { sku: { contains: q, mode: "insensitive" } },
     ];
   }
   if (category) {
@@ -53,7 +87,12 @@ export async function findProducts(
       orderBy,
       skip,
       take: limit,
-      include: { category: true },
+      include: {
+        category: true,
+        videoProducts: {
+          include: { video: true },
+        },
+      },
     }),
     prisma.product.count({ where }),
   ]);
@@ -66,7 +105,12 @@ export async function findProductBySlug(
 ): Promise<ProductWithCategory | null> {
   return prisma.product.findFirst({
     where: { slug, isActive: true },
-    include: { category: true },
+    include: {
+      category: true,
+      videoProducts: {
+        include: { video: true },
+      },
+    },
   });
 }
 
@@ -75,7 +119,12 @@ export async function findProductById(
 ): Promise<ProductWithCategory | null> {
   return prisma.product.findUnique({
     where: { id },
-    include: { category: true },
+    include: {
+      category: true,
+      videoProducts: {
+        include: { video: true },
+      },
+    },
   });
 }
 
@@ -88,7 +137,12 @@ export async function findRelatedProducts(
     where: { categoryId, isActive: true, id: { not: excludeId } },
     orderBy: { createdAt: "desc" },
     take: limit,
-    include: { category: true },
+    include: {
+      category: true,
+      videoProducts: {
+        include: { video: true },
+      },
+    },
   });
 }
 
@@ -99,7 +153,17 @@ export async function createProduct(
     data: {
       name: data.name,
       slug: data.slug,
+      sku: data.sku ?? null,
       author: data.author ?? null,
+      brand: data.brand ?? null,
+      series: data.series ?? null,
+      scale: data.scale ?? null,
+      material: data.material ?? null,
+      dimensions: data.dimensions ?? null,
+      productStatus: data.productStatus,
+      preorderEndsAt: data.preorderEndsAt ? new Date(data.preorderEndsAt) : null,
+      seoTitle: data.seoTitle ?? null,
+      seoDescription: data.seoDescription ?? null,
       shortDescription: data.shortDescription,
       description: data.description,
       imageUrl: data.imageUrl,
@@ -112,7 +176,12 @@ export async function createProduct(
       isNew: data.isNew ?? false,
       isActive: data.isActive ?? true,
     },
-    include: { category: true },
+    include: {
+      category: true,
+      videoProducts: {
+        include: { video: true },
+      },
+    },
   });
 }
 
@@ -125,7 +194,19 @@ export async function updateProduct(
     data: {
       ...(data.name !== undefined && { name: data.name }),
       ...(data.slug !== undefined && { slug: data.slug }),
+      ...(data.sku !== undefined && { sku: data.sku }),
       ...(data.author !== undefined && { author: data.author }),
+      ...(data.brand !== undefined && { brand: data.brand }),
+      ...(data.series !== undefined && { series: data.series }),
+      ...(data.scale !== undefined && { scale: data.scale }),
+      ...(data.material !== undefined && { material: data.material }),
+      ...(data.dimensions !== undefined && { dimensions: data.dimensions }),
+      ...(data.productStatus !== undefined && { productStatus: data.productStatus }),
+      ...(data.preorderEndsAt !== undefined && {
+        preorderEndsAt: data.preorderEndsAt ? new Date(data.preorderEndsAt) : null,
+      }),
+      ...(data.seoTitle !== undefined && { seoTitle: data.seoTitle }),
+      ...(data.seoDescription !== undefined && { seoDescription: data.seoDescription }),
       ...(data.shortDescription !== undefined && {
         shortDescription: data.shortDescription,
       }),
@@ -142,14 +223,24 @@ export async function updateProduct(
       ...(data.isNew !== undefined && { isNew: data.isNew }),
       ...(data.isActive !== undefined && { isActive: data.isActive }),
     },
-    include: { category: true },
+    include: {
+      category: true,
+      videoProducts: {
+        include: { video: true },
+      },
+    },
   });
 }
 
 export async function deleteProduct(id: string): Promise<ProductWithCategory> {
   return prisma.product.delete({
     where: { id },
-    include: { category: true },
+    include: {
+      category: true,
+      videoProducts: {
+        include: { video: true },
+      },
+    },
   });
 }
 

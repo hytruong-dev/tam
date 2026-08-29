@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Truck, Tag, ShieldCheck, RefreshCw, Play } from "lucide-react";
+import { ArrowRight, Truck, Tag, ShieldCheck, RefreshCw, Play, MessageSquare, Users } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { getProducts } from "@/lib/services/product.service";
 import { findVideos } from "@/lib/repositories/video.repository";
@@ -8,7 +8,8 @@ import { findVideos } from "@/lib/repositories/video.repository";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Kaku — Shop mô hình anime & figure chính hãng",
+  title: "ThienTam — Nền tảng Mô hình Figure, Video Review & Cộng đồng Anime",
+  description: "ThienTam - Shop mô hình anime, figure chính hãng, video review unbox và cộng đồng người sưu tầm.",
 };
 
 const infoItems = [
@@ -31,8 +32,8 @@ export default async function HomePage() {
       <section className="bg-charcoal text-white py-20 px-4 overflow-hidden relative">
         <div className="container mx-auto flex flex-col md:flex-row items-center gap-10">
           <div className="flex-1 max-w-xl">
-            <p className="text-gold text-sm tracking-widest uppercase mb-3 font-body">
-              Mô hình anime & figure chính hãng
+            <p className="text-copper text-sm tracking-widest uppercase mb-3 font-body font-semibold">
+              Mô hình anime & figure chính hãng ThienTam
             </p>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
               Sưu tầm{" "}
@@ -46,15 +47,15 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 bg-gold hover:bg-gold/90 text-charcoal font-semibold px-6 py-3 text-sm transition-colors"
+                className="inline-flex items-center gap-2 bg-copper hover:bg-copper/90 text-white font-semibold px-6 py-3 text-sm transition-colors rounded"
               >
                 XEM MÔ HÌNH <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/videos"
-                className="inline-flex items-center gap-2 border border-white/30 hover:border-gold hover:text-gold text-white/80 font-semibold px-6 py-3 text-sm transition-colors"
+                href="/community"
+                className="inline-flex items-center gap-2 border border-white/30 hover:border-gold hover:text-gold text-white/80 font-semibold px-6 py-3 text-sm transition-colors rounded"
               >
-                VIDEO REVIEW
+                <Users className="w-4 h-4" /> CỘNG ĐỒNG
               </Link>
             </div>
           </div>
@@ -102,7 +103,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border">
             {infoItems.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex items-center gap-3 py-5 px-4">
-                <Icon className="w-6 h-6 text-gold flex-shrink-0" />
+                <Icon className="w-6 h-6 text-copper flex-shrink-0" />
                 <div>
                   <p className="text-xs font-semibold text-ink">{title}</p>
                   <p className="text-xs text-muted-foreground">{desc}</p>
@@ -113,17 +114,38 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Community Banner Call-out */}
+      <section className="py-10 px-4 bg-white border-b border-border">
+        <div className="container mx-auto max-w-4xl bg-ivory/50 rounded border border-border p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-2 text-copper font-semibold text-xs tracking-wider uppercase mb-1">
+              <MessageSquare className="w-4 h-4" /> Cộng đồng sưu tầm ThienTam
+            </div>
+            <h3 className="font-heading text-2xl font-bold text-ink mb-2">Chia sẻ góc trưng bày mô hình của bạn!</h3>
+            <p className="text-muted-foreground text-sm">
+              Tham gia thảo luận, đăng hình góc sưu tầm và trao đổi cùng hàng ngàn collector khác.
+            </p>
+          </div>
+          <Link
+            href="/community"
+            className="inline-flex items-center gap-2 bg-copper hover:bg-copper/90 text-white font-semibold px-6 py-3 text-sm transition-colors rounded whitespace-nowrap"
+          >
+            THAM GIA CỘNG ĐỒNG <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
       {/* Best Sellers */}
       <section className="py-12 px-4">
         <div className="container mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <p className="text-gold text-xs tracking-widest uppercase mb-1">Được yêu thích nhất</p>
+              <p className="text-copper text-xs tracking-widest uppercase mb-1 font-semibold">Được yêu thích nhất</p>
               <h2 className="font-heading text-2xl font-bold text-ink">Bán chạy</h2>
             </div>
             <Link
               href="/products"
-              className="text-sm text-gold hover:underline flex items-center gap-1"
+              className="text-sm text-copper hover:underline flex items-center gap-1 font-medium"
             >
               Xem tất cả <ArrowRight className="w-3 h-3" />
             </Link>
@@ -147,12 +169,12 @@ export default async function HomePage() {
           <div className="container mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <p className="text-gold text-xs tracking-widest uppercase mb-1">Mới về</p>
+                <p className="text-copper text-xs tracking-widest uppercase mb-1 font-semibold">Mới về</p>
                 <h2 className="font-heading text-2xl font-bold text-ink">Hàng mới nhất</h2>
               </div>
               <Link
                 href="/products?sort=newest"
-                className="text-sm text-gold hover:underline flex items-center gap-1"
+                className="text-sm text-copper hover:underline flex items-center gap-1 font-medium"
               >
                 Xem tất cả <ArrowRight className="w-3 h-3" />
               </Link>
@@ -172,12 +194,12 @@ export default async function HomePage() {
           <div className="container mx-auto">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <p className="text-gold text-xs tracking-widest uppercase mb-1">Kênh YouTube</p>
+                <p className="text-copper text-xs tracking-widest uppercase mb-1 font-semibold">Kênh YouTube Review</p>
                 <h2 className="font-heading text-2xl font-bold text-ink">Video review mới nhất</h2>
               </div>
               <Link
                 href="/videos"
-                className="text-sm text-gold hover:underline flex items-center gap-1"
+                className="text-sm text-copper hover:underline flex items-center gap-1 font-medium"
               >
                 Xem tất cả <ArrowRight className="w-3 h-3" />
               </Link>
@@ -203,7 +225,7 @@ export default async function HomePage() {
                       </div>
                     </div>
                   </div>
-                  <h3 className="mt-3 font-semibold text-ink text-sm line-clamp-2 group-hover:text-gold transition-colors">
+                  <h3 className="mt-3 font-semibold text-ink text-sm line-clamp-2 group-hover:text-copper transition-colors">
                     {video.title}
                   </h3>
                   {video.description && (
@@ -231,9 +253,9 @@ export default async function HomePage() {
             <input
               type="email"
               placeholder="Nhập email của bạn..."
-              className="flex-1 md:w-64 px-4 py-2.5 bg-white/10 border border-white/20 rounded-none text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-gold"
+              className="flex-1 md:w-64 px-4 py-2.5 bg-white/10 border border-white/20 rounded text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-copper"
             />
-            <button className="bg-gold hover:bg-gold/90 text-charcoal font-semibold text-sm px-5 py-2.5 transition-colors">
+            <button className="bg-copper hover:bg-copper/90 text-white font-semibold text-sm px-5 py-2.5 transition-colors rounded">
               ĐĂNG KÝ
             </button>
           </form>

@@ -47,7 +47,16 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
     defaultValues: {
       name: product?.name ?? "",
       slug: product?.slug ?? "",
+      sku: product?.sku ?? "",
+      brand: product?.brand ?? "",
+      series: product?.series ?? "",
+      scale: product?.scale ?? "",
+      material: product?.material ?? "",
+      dimensions: product?.dimensions ?? "",
+      productStatus: product?.productStatus ?? "IN_STOCK",
       author: product?.author ?? "",
+      seoTitle: product?.seoTitle ?? "",
+      seoDescription: product?.seoDescription ?? "",
       shortDescription: product?.shortDescription ?? "",
       description: product?.description ?? "",
       imageUrl: product?.imageUrl ?? "",
@@ -107,7 +116,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
         return;
       }
 
-      toast.success(isEdit ? "Đã cập nhật sản phẩm" : "Đã thêm sản phẩm mới");
+      toast.success(isEdit ? "Đã cập nhật mô hình" : "Đã thêm mô hình mới");
       router.push("/admin/products");
       router.refresh();
     } catch {
@@ -130,7 +139,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
         </Button>
         <div className="flex-1">
           <h1 className="font-heading text-2xl font-bold text-ink">
-            {isEdit ? "Sửa sản phẩm" : "Thêm sản phẩm mới"}
+            {isEdit ? "Sửa mô hình" : "Thêm mô hình mới"}
           </h1>
         </div>
         <Button
@@ -140,30 +149,30 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
         >
           {isSubmitting ? (
             <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Đang lưu...</>
-          ) : isEdit ? "Lưu thay đổi" : "Thêm sản phẩm"}
+          ) : isEdit ? "Lưu thay đổi" : "Thêm mô hình"}
         </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main info */}
         <div className="lg:col-span-2 space-y-6 bg-white p-6 rounded shadow-sm">
-          <h2 className="font-semibold text-ink border-b border-border pb-2">Thông tin sản phẩm</h2>
+          <h2 className="font-semibold text-ink border-b border-border pb-2">Thông tin chính mô hình</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Name */}
             <div className="sm:col-span-2">
-              <Label htmlFor="name">Tên sản phẩm <span className="text-destructive">*</span></Label>
-              <Input id="name" {...register("name")} placeholder="VD: Bóng Tối Trong Mưa — Tập 1" className="mt-1.5" />
+              <Label htmlFor="name">Tên mô hình / Figure <span className="text-destructive">*</span></Label>
+              <Input id="name" {...register("name")} placeholder="VD: Figure Nendoroid Naruto Uzumaki" className="mt-1.5" />
               {errors.name && <p className="text-destructive text-xs mt-1">{errors.name.message}</p>}
             </div>
 
             {/* Slug */}
-            <div className="sm:col-span-2">
+            <div>
               <Label htmlFor="slug">Slug <span className="text-destructive">*</span></Label>
               <Input
                 id="slug"
                 {...register("slug")}
-                placeholder="bong-toi-trong-mua-tap-1"
+                placeholder="figure-nendoroid-naruto-uzumaki"
                 className="mt-1.5 font-mono text-sm"
                 onChange={(e) => {
                   setSlugManuallyEdited(true);
@@ -171,13 +180,42 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
                 }}
               />
               {errors.slug && <p className="text-destructive text-xs mt-1">{errors.slug.message}</p>}
-              <p className="text-muted-foreground text-xs mt-1">Slug tự tạo từ tên. Chỉnh tay sau khi nhập nếu cần.</p>
             </div>
 
-            {/* Author */}
+            {/* SKU */}
             <div>
-              <Label htmlFor="author">Tác giả</Label>
-              <Input id="author" {...register("author")} placeholder="Tên tác giả" className="mt-1.5" />
+              <Label htmlFor="sku">Mã SKU / Kho</Label>
+              <Input id="sku" {...register("sku")} placeholder="VD: FIG-NARUTO-001" className="mt-1.5 font-mono text-sm" />
+            </div>
+
+            {/* Brand */}
+            <div>
+              <Label htmlFor="brand">Hãng sản xuất (Brand)</Label>
+              <Input id="brand" {...register("brand")} placeholder="VD: Good Smile Company, Bandai..." className="mt-1.5" />
+            </div>
+
+            {/* Series */}
+            <div>
+              <Label htmlFor="series">Series / Anime</Label>
+              <Input id="series" {...register("series")} placeholder="VD: Naruto Shippuden, One Piece..." className="mt-1.5" />
+            </div>
+
+            {/* Scale */}
+            <div>
+              <Label htmlFor="scale">Tỷ lệ (Scale)</Label>
+              <Input id="scale" {...register("scale")} placeholder="VD: 1/7, 1/8, Nendoroid..." className="mt-1.5" />
+            </div>
+
+            {/* Material */}
+            <div>
+              <Label htmlFor="material">Chất liệu</Label>
+              <Input id="material" {...register("material")} placeholder="VD: PVC & ABS" className="mt-1.5" />
+            </div>
+
+            {/* Dimensions */}
+            <div>
+              <Label htmlFor="dimensions">Kích thước</Label>
+              <Input id="dimensions" {...register("dimensions")} placeholder="VD: Cao 100mm" className="mt-1.5" />
             </div>
 
             {/* Category */}
@@ -198,6 +236,25 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
               </Select>
               {errors.categoryId && <p className="text-destructive text-xs mt-1">{errors.categoryId.message}</p>}
             </div>
+
+            {/* Product Status */}
+            <div>
+              <Label>Trạng thái sản phẩm</Label>
+              <Select
+                defaultValue={product?.productStatus ?? "IN_STOCK"}
+                onValueChange={(v: any) => setValue("productStatus", v, { shouldDirty: true })}
+              >
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue placeholder="Trạng thái kho" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="IN_STOCK">Sẵn hàng (In Stock)</SelectItem>
+                  <SelectItem value="PREORDER">Đặt trước (Pre-order)</SelectItem>
+                  <SelectItem value="SOLD_OUT">Hết hàng (Sold Out)</SelectItem>
+                  <SelectItem value="DISCONTINUED">Ngừng sản xuất</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Short description */}
@@ -206,7 +263,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
             <Textarea
               id="shortDescription"
               {...register("shortDescription")}
-              placeholder="Một đoạn mô tả ngắn về sản phẩm..."
+              placeholder="Một đoạn mô tả ngắn về mô hình..."
               rows={2}
               className="mt-1.5"
             />
@@ -219,7 +276,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
             <Textarea
               id="description"
               {...register("description")}
-              placeholder="Mô tả đầy đủ về nội dung sản phẩm..."
+              placeholder="Mô tả đầy đủ chi tiết phế liệu, phụ kiện kèm theo..."
               rows={5}
               className="mt-1.5"
             />
@@ -237,7 +294,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
                 id="price"
                 type="number"
                 {...register("price", { valueAsNumber: true })}
-                placeholder="109000"
+                placeholder="1090000"
                 className="mt-1.5"
               />
               {errors.price && <p className="text-destructive text-xs mt-1">{errors.price.message}</p>}
@@ -248,7 +305,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
                 id="originalPrice"
                 type="number"
                 {...register("originalPrice", { valueAsNumber: true })}
-                placeholder="129000"
+                placeholder="1290000"
                 className="mt-1.5"
               />
             </div>
@@ -270,7 +327,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
         <div className="space-y-6">
           {/* Image upload */}
           <div className="bg-white p-5 rounded shadow-sm space-y-4">
-            <h2 className="font-semibold text-ink border-b border-border pb-2">Ảnh bìa</h2>
+            <h2 className="font-semibold text-ink border-b border-border pb-2">Ảnh mô hình</h2>
             <ImageUpload
               currentUrl={product?.imageUrl}
               currentPath={product?.imagePath ?? undefined}
@@ -279,17 +336,16 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
             {errors.imageUrl && (
               <p className="text-destructive text-xs">{errors.imageUrl.message}</p>
             )}
-            {/* Hidden input for imageUrl fallback */}
             <Input
               {...register("imageUrl")}
-              placeholder="Hoặc nhập URL ảnh..."
+              placeholder="Hoặc nhập URL ảnh trực tiếp..."
               className="text-xs"
             />
           </div>
 
           {/* Options */}
           <div className="bg-white p-5 rounded shadow-sm space-y-4">
-            <h2 className="font-semibold text-ink border-b border-border pb-2">Tùy chọn</h2>
+            <h2 className="font-semibold text-ink border-b border-border pb-2">Tùy chọn hiển thị</h2>
 
             <div className="flex items-center justify-between">
               <Label htmlFor="isActive" className="font-normal cursor-pointer">
@@ -304,7 +360,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
 
             <div className="flex items-center justify-between">
               <Label htmlFor="isFeatured" className="font-normal cursor-pointer">
-                Đánh dấu bán chạy
+                Đánh dấu mô hình Nổi bật / Bán chạy
               </Label>
               <Switch
                 id="isFeatured"
@@ -315,13 +371,26 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
 
             <div className="flex items-center justify-between">
               <Label htmlFor="isNew" className="font-normal cursor-pointer">
-                Đánh dấu sản phẩm mới
+                Đánh dấu mô hình Mới về
               </Label>
               <Switch
                 id="isNew"
                 checked={isNew}
                 onCheckedChange={(v) => setValue("isNew", v, { shouldDirty: true })}
               />
+            </div>
+          </div>
+
+          {/* SEO Metadata */}
+          <div className="bg-white p-5 rounded shadow-sm space-y-4">
+            <h2 className="font-semibold text-ink border-b border-border pb-2">SEO Metadata (Tùy chọn)</h2>
+            <div>
+              <Label htmlFor="seoTitle" className="text-xs">SEO Title</Label>
+              <Input id="seoTitle" {...register("seoTitle")} placeholder="Tiêu đề SEO Google" className="mt-1 text-xs" />
+            </div>
+            <div>
+              <Label htmlFor="seoDescription" className="text-xs">SEO Description</Label>
+              <Textarea id="seoDescription" {...register("seoDescription")} placeholder="Mô tả chuẩn SEO..." rows={2} className="mt-1 text-xs" />
             </div>
           </div>
         </div>
