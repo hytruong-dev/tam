@@ -114,8 +114,8 @@ export function CategoryForm({ category, mode }: CategoryFormProps) {
         </Button>
       </div>
 
-      <div className="max-w-lg bg-white p-6 rounded shadow-sm space-y-5">
-        <h2 className="font-semibold text-ink border-b border-border pb-2">Thông tin danh mục</h2>
+      <div className="max-w-lg bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl space-y-5 text-white">
+        <h2 className="font-extrabold text-white border-b border-white/10 pb-3 text-base">Thông tin danh mục</h2>
 
         <div>
           <Label htmlFor="name">

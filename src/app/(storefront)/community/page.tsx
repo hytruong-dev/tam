@@ -1,126 +1,116 @@
-"use client";
+import Link from "next/link";
+import { MessageSquare, Users, Sparkles, Heart, MessageCircle, Share2, Award, Camera, ShieldCheck } from "lucide-react";
+import { findCommunityFeed } from "@/lib/repositories/community.repository";
 
-import { useEffect, useState } from "react";
-import { PostComposer } from "@/components/community/PostComposer";
-import { PostCard } from "@/components/community/PostCard";
-import type { PostWithAuthorAndMedia } from "@/lib/repositories/community.repository";
-import { Sparkles, MessageSquare, Users } from "lucide-react";
+export const dynamic = "force-dynamic";
 
-interface UserInfo {
-  id: string;
-  displayName: string;
-  email: string;
-  avatarUrl?: string | null;
-}
+export const metadata = {
+  title: "Diễn Đàn Cộng Đồng Collector Figure | ThienTam Studio",
+  description: "Cộng đồng chia sẻ góc trưng bày mô hình figure, review sản phẩm, thảo luận và giao lưu collector Việt Nam.",
+};
 
-export default function CommunityPage() {
-  const [currentUser, setCurrentUser] = useState<UserInfo | null>(null);
-  const [posts, setPosts] = useState<PostWithAuthorAndMedia[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTopic, setActiveTopic] = useState<string | null>(null);
-
-  const fetchUser = async () => {
-    try {
-      const res = await fetch("/api/customer-auth/me");
-      const json = await res.json();
-      if (res.ok) setCurrentUser(json.data);
-    } catch {
-      setCurrentUser(null);
-    }
-  };
-
-  const fetchFeed = async (topic?: string | null) => {
-    setLoading(true);
-    try {
-      const url = topic ? `/api/community/feed?topic=${encodeURIComponent(topic)}` : "/api/community/feed";
-      const res = await fetch(url);
-      const json = await res.json();
-      if (res.ok && json.data) {
-        setPosts(json.data.posts);
-      }
-    } catch {
-      console.error("Failed to load feed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-    fetchFeed();
-  }, []);
-
-  const handleTopicChange = (topic: string | null) => {
-    setActiveTopic(topic);
-    fetchFeed(topic);
-  };
-
-  const topics = [
-    { label: "Tất cả", value: null },
-    { label: "ShowGocTrungBay", value: "ShowGocTrungBay" },
-    { label: "ReviewFigure", value: "ReviewFigure" },
-    { label: "SanHangHopLy", value: "SanHangHopLy" },
-    { label: "GundamModelKit", value: "GundamModelKit" },
-  ];
+export default async function CommunityPage() {
+  const { posts } = await findCommunityFeed({ limit: 20 });
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-4xl">
-      <div className="mb-8 text-center sm:text-left">
-        <p className="text-copper text-xs tracking-widest uppercase mb-1 font-semibold flex items-center justify-center sm:justify-start gap-1">
-          <Users className="w-4 h-4" /> Cộng đồng sưu tầm ThienTam
-        </p>
-        <h1 className="font-heading text-3xl font-bold text-ink">Góc Giao Lưu & Review</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Nơi giao lưu, khoe góc trưng bày mô hình, hỏi đáp và trao đổi đam mê cùng hàng ngàn collector.
-        </p>
-      </div>
-
-      {/* Topic Filter */}
-      <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
-        {topics.map((t) => (
-          <button
-            key={t.label}
-            onClick={() => handleTopicChange(t.value)}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border ${
-              activeTopic === t.value
-                ? "bg-copper text-white border-copper"
-                : "bg-white text-ink border-border hover:border-copper"
-            }`}
-          >
-            {t.value ? `#${t.label}` : t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Post Composer */}
-      <PostComposer currentUser={currentUser} onPostCreated={() => fetchFeed(activeTopic)} />
-
-      {/* Feed list */}
-      {loading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-white p-5 rounded border border-border space-y-3 animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-1/3" />
-              <div className="h-16 bg-gray-200 rounded w-full" />
-            </div>
-          ))}
+    <div className="bg-[#0B0E17] min-h-screen py-8 text-gray-100">
+      <div className="container mx-auto px-4 max-w-4xl space-y-8">
+        {/* Page Header */}
+        <div className="bg-[#141824] p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl">
+          <div className="flex items-center gap-2 text-[#E05638] text-xs font-extrabold uppercase tracking-wider mb-2 drop-shadow-[0_0_8px_rgba(224,86,56,0.4)]">
+            <Users className="w-4 h-4" /> CỘNG ĐỒNG COLLECTOR THIENTAM
+          </div>
+          <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-white">
+            Góc Khoe Mô Hình & Thảo Luận Sưu Tầm
+          </h1>
+          <p className="text-gray-300 text-xs sm:text-sm mt-1.5 leading-relaxed">
+            Nơi hàng ngàn đam mê hội tụ: Đăng tải bộ sưu tập tủ Figure, hỏi đáp kinh nghiệm chống mốc bụi, và cập nhật những tin tức mở bán Pre-order mới nhất.
+          </p>
         </div>
-      ) : posts.length === 0 ? (
-        <div className="bg-white p-12 text-center rounded border border-border space-y-2">
-          <MessageSquare className="w-10 h-10 text-muted-foreground mx-auto" />
-          <h3 className="font-semibold text-ink">Chưa có bài viết nào</h3>
-          <p className="text-muted-foreground text-xs">Hãy là người đầu tiên mở màn chủ đề này!</p>
+
+        {/* Join Community CTA */}
+        <div className="bg-gradient-to-r from-[#141824] via-[#1b2133] to-[#251014] rounded-3xl p-6 text-white border border-white/10 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 text-center sm:text-left">
+            <h3 className="font-extrabold text-base sm:text-lg flex items-center justify-center sm:justify-start gap-2">
+              <Camera className="w-5 h-5 text-[#E05638]" /> Khoe Góc Trưng Bày Của Bạn
+            </h3>
+            <p className="text-gray-300 text-xs max-w-md">
+              Đăng nhập tài khoản ThienTam để tự do đăng tải hình ảnh bộ sưu tập và nhận lượt thích từ cộng đồng!
+            </p>
+          </div>
+          <div className="flex items-center gap-3 whitespace-nowrap">
+            <Link
+              href="/auth/login"
+              className="px-5 py-2.5 bg-[#E05638] hover:bg-[#E05638]/90 text-white font-extrabold text-xs rounded-xl shadow-[0_0_15px_rgba(224,86,56,0.4)] transition-all"
+            >
+              Đăng Nhập
+            </Link>
+            <Link
+              href="/auth/register"
+              className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs rounded-xl border border-white/20 transition-all"
+            >
+              Tạo Tài Khoản
+            </Link>
+          </div>
         </div>
-      ) : (
-        posts.map((post) => (
-          <PostCard
-            key={post.id}
-            post={post}
-            currentUserId={currentUser?.id}
-            onDeleted={() => fetchFeed(activeTopic)}
-          />
-        ))
-      )}
+
+        {/* Posts List */}
+        {posts.length === 0 ? (
+          <div className="bg-[#141824] p-12 text-center rounded-3xl border border-white/10 shadow-xl space-y-3">
+            <MessageSquare className="w-12 h-12 text-gray-600 mx-auto" />
+            <h3 className="font-extrabold text-white text-base">Chưa có bài viết nào trong diễn đàn</h3>
+            <p className="text-gray-400 text-xs">Hãy là người đầu tiên mở màn bài đăng chia sẻ mô hình nhé!</p>
+          </div>
+        ) : (
+          <div className="space-y-5">
+            {posts.map((post) => (
+              <div key={post.id} className="bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-xl space-y-4 hover:border-white/20 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={post.author.avatarUrl || "https://api.dicebear.com/7.x/bottts/svg?seed=user"}
+                      alt="Avatar"
+                      className="w-10 h-10 rounded-full border-2 border-[#E05638] object-cover shadow-[0_0_8px_rgba(224,86,56,0.5)]"
+                    />
+                    <div>
+                      <h4 className="text-xs font-extrabold text-white">{post.author.displayName}</h4>
+                      <span className="text-[10px] text-gray-400">
+                        {new Date(post.createdAt).toLocaleDateString("vi-VN", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="bg-[#E05638]/15 text-[#E05638] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase border border-[#E05638]/30">
+                    Collector
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm text-gray-200 leading-relaxed whitespace-pre-line">
+                  {post.content}
+                </p>
+
+                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
+                  <button className="flex items-center gap-1.5 hover:text-[#E05638] transition-colors font-semibold">
+                    <Heart className="w-4 h-4 text-red-400" />
+                    <span>Yêu thích</span>
+                  </button>
+                  <button className="flex items-center gap-1.5 hover:text-[#E05638] transition-colors font-semibold">
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Bình luận</span>
+                  </button>
+                  <button className="flex items-center gap-1.5 hover:text-[#E05638] transition-colors font-semibold">
+                    <Share2 className="w-4 h-4" />
+                    <span>Chia sẻ</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

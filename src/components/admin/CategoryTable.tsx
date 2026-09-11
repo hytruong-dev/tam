@@ -54,71 +54,71 @@ export function AdminCategoryTable({ categories }: AdminCategoryTableProps) {
   };
 
   return (
-    <div className="bg-white rounded shadow-sm">
+    <div className="bg-[#141824] rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="bg-ivory/50">
-              <TableHead>Tên danh mục</TableHead>
-              <TableHead>Slug</TableHead>
-              <TableHead className="hidden md:table-cell">Ngày tạo</TableHead>
-              <TableHead className="text-right">Hành động</TableHead>
+            <TableRow className="border-b border-white/10 bg-[#0B0E17]/80 hover:bg-[#0B0E17]/80">
+              <TableHead className="pl-4 text-gray-400 font-extrabold uppercase text-[10px]">Tên danh mục mô hình</TableHead>
+              <TableHead className="text-gray-400 font-extrabold uppercase text-[10px]">Slug định danh</TableHead>
+              <TableHead className="hidden md:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Ngày khởi tạo</TableHead>
+              <TableHead className="text-right pr-4 text-gray-400 font-extrabold uppercase text-[10px]">Hành động</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="divide-y divide-white/5">
             {categories.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-12 text-muted-foreground">
-                  Chưa có danh mục nào
+                <TableCell colSpan={4} className="text-center py-12 text-gray-400">
+                  Chưa có danh mục nào.
                 </TableCell>
               </TableRow>
             ) : (
               categories.map((cat) => (
-                <TableRow key={cat.id} className="hover:bg-ivory/30">
-                  <TableCell>
-                    <p className="font-medium text-sm text-ink">{cat.name}</p>
+                <TableRow key={cat.id} className="hover:bg-white/5 border-b border-white/5 transition-colors group">
+                  <TableCell className="pl-4">
+                    <p className="font-bold text-sm text-white group-hover:text-amber-400 transition-colors">{cat.name}</p>
                   </TableCell>
                   <TableCell>
-                    <code className="text-xs bg-gray-100 px-2 py-0.5 rounded text-muted-foreground">
+                    <code className="text-xs bg-[#0B0E17] px-2.5 py-1 rounded-md text-amber-300 font-mono border border-white/10">
                       {cat.slug}
                     </code>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-gray-400">
                       {formatDate(cat.createdAt)}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
+                  <TableCell className="text-right pr-4">
+                    <div className="flex items-center justify-end gap-1.5">
                       <Link
                         href={`/admin/categories/${cat.id}/edit`}
-                        className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white transition-colors border border-white/10"
+                        title="Chỉnh sửa"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </Link>
                       <AlertDialog>
                         <AlertDialogTrigger
-                          className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-red-50 text-destructive transition-colors disabled:opacity-50"
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 transition-colors disabled:opacity-50"
                           disabled={deletingId === cat.id}
+                          title="Xóa danh mục"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="bg-[#141824] border-white/10 text-white">
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Xác nhận xóa danh mục</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Bạn có chắc muốn xóa <strong>"{cat.name}"</strong>? Danh mục
-                              chỉ có thể xóa nếu không có sản phẩm nào. Hành động này không
-                              thể hoàn tác.
+                            <AlertDialogTitle className="text-white">Xác nhận xóa danh mục</AlertDialogTitle>
+                            <AlertDialogDescription className="text-gray-300">
+                              Bạn có chắc muốn xóa danh mục <strong>"{cat.name}"</strong>? Thao tác này không thể hoàn tác.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Hủy</AlertDialogCancel>
+                            <AlertDialogCancel className="bg-white/10 border-white/10 text-white hover:bg-white/20">Hủy</AlertDialogCancel>
                             <AlertDialogAction
-                              className="bg-destructive hover:bg-destructive/90 text-white"
+                              className="bg-red-600 hover:bg-red-700 text-white"
                               onClick={() => handleDelete(cat.id, cat.name)}
                             >
-                              Xóa
+                              Xóa danh mục
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

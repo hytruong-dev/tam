@@ -155,8 +155,10 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main info */}
-        <div className="lg:col-span-2 space-y-6 bg-white p-6 rounded shadow-sm">
-          <h2 className="font-semibold text-ink border-b border-border pb-2">Thông tin chính mô hình</h2>
+        <div className="lg:col-span-2 space-y-6 bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl text-white">
+          <h2 className="font-extrabold text-white border-b border-white/10 pb-3 text-base flex items-center gap-2">
+            Thông tin chính mô hình Figure
+          </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Name */}
@@ -326,26 +328,26 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
         {/* Right panel */}
         <div className="space-y-6">
           {/* Image upload */}
-          <div className="bg-white p-5 rounded shadow-sm space-y-4">
-            <h2 className="font-semibold text-ink border-b border-border pb-2">Ảnh mô hình</h2>
+          <div className="bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl space-y-4 text-white">
+            <h2 className="font-extrabold text-white border-b border-white/10 pb-2 text-sm">Ảnh đại diện mô hình</h2>
             <ImageUpload
               currentUrl={product?.imageUrl}
               currentPath={product?.imagePath ?? undefined}
               onUpload={handleImageUpload}
             />
             {errors.imageUrl && (
-              <p className="text-destructive text-xs">{errors.imageUrl.message}</p>
+              <p className="text-red-400 text-xs">{errors.imageUrl.message}</p>
             )}
             <Input
               {...register("imageUrl")}
               placeholder="Hoặc nhập URL ảnh trực tiếp..."
-              className="text-xs"
+              className="text-xs bg-[#0B0E17] border-white/15 text-white placeholder:text-gray-500 rounded-xl"
             />
           </div>
 
           {/* Options */}
-          <div className="bg-white p-5 rounded shadow-sm space-y-4">
-            <h2 className="font-semibold text-ink border-b border-border pb-2">Tùy chọn hiển thị</h2>
+          <div className="bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl space-y-4 text-white">
+            <h2 className="font-extrabold text-white border-b border-white/10 pb-2 text-sm">Tùy chọn trang thái</h2>
 
             <div className="flex items-center justify-between">
               <Label htmlFor="isActive" className="font-normal cursor-pointer">

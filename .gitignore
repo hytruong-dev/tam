@@ -48,4 +48,5 @@ next-env.d.ts
 
 .vercel
 
+.cursor
 dev-test*.txt

@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
   AlertDialog,
@@ -81,16 +80,16 @@ export function AdminProductTable({
   };
 
   return (
-    <div className="bg-white rounded shadow-sm">
+    <div className="bg-[#141824] rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
       {/* Search bar */}
-      <div className="p-4 border-b border-border">
-        <form onSubmit={handleSearch} className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <div className="p-4 sm:p-5 border-b border-white/10 bg-[#0B0E17]/60">
+        <form onSubmit={handleSearch} className="relative max-w-md">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             name="q"
             defaultValue={query}
-            placeholder="Tìm kiếm sản phẩm..."
-            className="pl-9"
+            placeholder="Tìm kiếm sản phẩm, series, thương hiệu..."
+            className="pl-10 bg-[#0B0E17] border-white/15 text-white placeholder:text-gray-500 rounded-xl focus:border-[#E05638] focus:ring-[#E05638]"
           />
         </form>
       </div>
@@ -98,29 +97,29 @@ export function AdminProductTable({
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="bg-ivory/50">
-              <TableHead className="w-16">Ảnh</TableHead>
-              <TableHead>Tên sản phẩm</TableHead>
-              <TableHead className="hidden sm:table-cell">Danh mục</TableHead>
-              <TableHead className="text-right">Giá</TableHead>
-              <TableHead className="text-center hidden md:table-cell">SL</TableHead>
-              <TableHead className="hidden lg:table-cell">Trạng thái</TableHead>
-              <TableHead className="hidden xl:table-cell">Ngày tạo</TableHead>
-              <TableHead className="text-right">Hành động</TableHead>
+            <TableRow className="border-b border-white/10 bg-[#0B0E17]/80 hover:bg-[#0B0E17]/80">
+              <TableHead className="w-16 pl-4 text-gray-400 font-extrabold uppercase text-[10px]">Ảnh</TableHead>
+              <TableHead className="text-gray-400 font-extrabold uppercase text-[10px]">Tên sản phẩm mô hình</TableHead>
+              <TableHead className="hidden sm:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Danh mục</TableHead>
+              <TableHead className="text-right text-gray-400 font-extrabold uppercase text-[10px]">Giá bán</TableHead>
+              <TableHead className="text-center hidden md:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Kho</TableHead>
+              <TableHead className="hidden lg:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Trạng thái</TableHead>
+              <TableHead className="hidden xl:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Ngày tạo</TableHead>
+              <TableHead className="text-right pr-4 text-gray-400 font-extrabold uppercase text-[10px]">Hành động</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="divide-y divide-white/5">
             {products.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
-                  Không có sản phẩm nào
+                <TableCell colSpan={8} className="text-center py-12 text-gray-400">
+                  Chưa có sản phẩm mô hình nào.
                 </TableCell>
               </TableRow>
             ) : (
               products.map((product) => (
-                <TableRow key={product.id} className="hover:bg-ivory/30">
-                  <TableCell>
-                    <div className="relative w-10 h-14 overflow-hidden bg-gray-100 flex-shrink-0">
+                <TableRow key={product.id} className="hover:bg-white/5 border-b border-white/5 transition-colors group">
+                  <TableCell className="pl-4">
+                    <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-[#0B0E17] border border-white/10 flex-shrink-0">
                       <Image
                         src={product.imageUrl}
                         alt={product.name}
@@ -132,74 +131,89 @@ export function AdminProductTable({
                   </TableCell>
                   <TableCell>
                     <div>
-                      <p className="font-medium text-sm text-ink line-clamp-1">{product.name}</p>
-                      {product.author && (
-                        <p className="text-xs text-muted-foreground">{product.author}</p>
+                      <p className="font-bold text-sm text-white group-hover:text-[#E05638] transition-colors line-clamp-1">
+                        {product.name}
+                      </p>
+                      {product.brand && (
+                        <p className="text-[11px] text-gray-400">{product.brand}</p>
                       )}
-                      <div className="flex gap-1 mt-1">
+                      <div className="flex gap-1.5 mt-1">
                         {product.isFeatured && (
-                          <Badge variant="outline" className="text-[9px] border-gold/40 text-gold px-1 py-0">BÁN CHẠY</Badge>
+                          <span className="text-[9px] font-extrabold bg-[#E05638]/20 border border-[#E05638]/40 text-[#E05638] px-1.5 py-0.5 rounded">
+                            HOT
+                          </span>
                         )}
                         {product.isNew && (
-                          <Badge variant="outline" className="text-[9px] border-green-400 text-green-700 px-1 py-0">MỚI</Badge>
+                          <span className="text-[9px] font-extrabold bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 px-1.5 py-0.5 rounded">
+                            MỚI
+                          </span>
                         )}
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">
-                    <span className="text-xs text-muted-foreground">{product.category.name}</span>
+                    <span className="text-xs font-semibold text-gray-300">
+                      {product.category?.name || "N/A"}
+                    </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className="text-sm font-semibold text-burgundy whitespace-nowrap">
+                    <span className="text-sm font-extrabold text-[#E05638] whitespace-nowrap">
                       {formatPrice(Number(product.price))}
                     </span>
                   </TableCell>
                   <TableCell className="text-center hidden md:table-cell">
-                    <span className={`text-sm ${product.stock === 0 ? "text-destructive" : "text-ink"}`}>
+                    <span className={`text-xs font-bold ${product.stock === 0 ? "text-red-400" : "text-emerald-400"}`}>
                       {product.stock}
                     </span>
                   </TableCell>
                   <TableCell className="hidden lg:table-cell">
-                    <Badge
-                      variant={product.isActive ? "default" : "secondary"}
-                      className={product.isActive ? "bg-green-100 text-green-700 border-green-200" : "bg-gray-100 text-gray-500"}
+                    <span
+                      className={`text-[10px] font-extrabold px-2 py-0.5 rounded border ${
+                        product.isActive
+                          ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                          : "bg-gray-800 text-gray-400 border-gray-700"
+                      }`}
                     >
                       {product.isActive ? "Hiển thị" : "Ẩn"}
-                    </Badge>
+                    </span>
                   </TableCell>
                   <TableCell className="hidden xl:table-cell">
-                    <span className="text-xs text-muted-foreground">{formatDate(product.createdAt)}</span>
+                    <span className="text-xs text-gray-400">{formatDate(product.createdAt)}</span>
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
+                  <TableCell className="text-right pr-4">
+                    <div className="flex items-center justify-end gap-1.5">
                       <Link
                         href={`/admin/products/${product.id}/edit`}
-                        className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white transition-colors border border-white/10"
+                        title="Chỉnh sửa"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </Link>
 
                       <AlertDialog>
                         <AlertDialogTrigger
-                          className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-red-50 text-destructive transition-colors disabled:opacity-50"
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 transition-colors disabled:opacity-50"
                           disabled={deletingId === product.id}
+                          title="Xóa sản phẩm"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="bg-[#141824] border-white/10 text-white">
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Xác nhận xóa sản phẩm</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Bạn có chắc muốn xóa <strong>"{product.name}"</strong>? Hành động này không thể hoàn tác.
+                            <AlertDialogTitle className="text-white">Xác nhận xóa sản phẩm mô hình</AlertDialogTitle>
+                            <AlertDialogDescription className="text-gray-300">
+                              Bạn có chắc chắn muốn xóa <strong>"{product.name}"</strong>? Thao tác này không thể hoàn tác.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Hủy</AlertDialogCancel>
+                            <AlertDialogCancel className="bg-white/10 border-white/10 text-white hover:bg-white/20">
+                              Hủy
+                            </AlertDialogCancel>
                             <AlertDialogAction
-                              className="bg-destructive hover:bg-destructive/90 text-white"
+                              className="bg-red-600 hover:bg-red-700 text-white"
                               onClick={() => handleDelete(product.id, product.name)}
                             >
-                              Xóa
+                              Xóa sản phẩm
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -214,7 +228,7 @@ export function AdminProductTable({
       </div>
 
       {totalPages > 1 && (
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-white/10 bg-[#0B0E17]/60">
           <Pagination page={page} totalPages={totalPages} />
         </div>
       )}

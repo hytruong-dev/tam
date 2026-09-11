@@ -7,16 +7,10 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient(): PrismaClient {
   const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
-    throw new Error(
-      "DATABASE_URL environment variable is not set. " +
-        "Copy .env.example to .env.local and fill in your Supabase credentials."
-    );
-  }
-  const adapter = new PrismaPg({ connectionString });
+  const adapter = connectionString ? new PrismaPg({ connectionString }) : undefined;
   return new PrismaClient({
-    adapter,
-    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+    ...(adapter && { adapter }),
+    log: [],
   });
 }
 

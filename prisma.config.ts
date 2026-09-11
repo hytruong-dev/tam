@@ -8,8 +8,7 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    // For migrations use DIRECT_URL (bypasses pgbouncer pooler).
-    // If DIRECT_URL is not set, fall back to DATABASE_URL.
-    url: process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? "",
+    // Sử dụng DIRECT_URL hoặc DATABASE_URL từ môi trường
+    url: process.env.DATABASE_URL || process.env.DIRECT_URL || "",
   },
 });

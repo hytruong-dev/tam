@@ -1,27 +1,30 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Tag } from "lucide-react";
 import { AdminCategoryTable } from "@/components/admin/CategoryTable";
 import { findAllCategories } from "@/lib/repositories/category.repository";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Quản lý danh mục | Admin" };
+export const metadata = { title: "Quản lý danh mục | ThienTam Admin" };
 
 export default async function AdminCategoriesPage() {
   const categories = await findAllCategories();
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-ink">Danh mục</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">{categories.length} danh mục</p>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-extrabold uppercase tracking-wider">
+            <Tag className="w-4 h-4" /> QUẢN LÝ DANH MỤC
+          </div>
+          <h1 className="font-heading text-2xl font-extrabold text-white">Danh Mục Mô Hình</h1>
+          <p className="text-gray-400 text-xs">Tổng cộng {categories.length} danh mục phân loại</p>
         </div>
         <Link
           href="/admin/categories/create"
-          className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold/90 text-charcoal font-semibold text-sm px-3 py-2 transition-colors"
+          className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-black font-extrabold text-xs px-5 py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)]"
         >
           <Plus className="w-4 h-4" />
-          Thêm danh mục
+          Tạo Danh Mục Mới
         </Link>
       </div>
 

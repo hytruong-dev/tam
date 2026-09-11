@@ -46,7 +46,7 @@ export function AdminLoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <div className="space-y-5">
       <div>
         <Label htmlFor="password" className="text-ink mb-1.5 block text-sm font-medium">
           Mật khẩu quản trị
@@ -74,7 +74,8 @@ export function AdminLoginForm() {
       </div>
 
       <Button
-        type="submit"
+        type="button"
+        onClick={handleSubmit(onSubmit)}
         disabled={isSubmitting}
         className="w-full bg-charcoal hover:bg-charcoal/90 text-ivory rounded-none font-semibold"
       >
@@ -84,6 +85,6 @@ export function AdminLoginForm() {
           "ĐĂNG NHẬP"
         )}
       </Button>
-    </form>
+    </div>
   );
 }

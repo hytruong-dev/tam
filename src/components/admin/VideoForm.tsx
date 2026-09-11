@@ -120,9 +120,9 @@ export function VideoForm({ video, mode }: VideoFormProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main info */}
-        <div className="lg:col-span-2 space-y-6 bg-white p-6 rounded shadow-sm">
-          <h2 className="font-semibold text-ink border-b border-border pb-2">
-            Thông tin video
+        <div className="lg:col-span-2 space-y-6 bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl text-white">
+          <h2 className="font-extrabold text-white border-b border-white/10 pb-3 text-base">
+            Thông tin video YouTube Review
           </h2>
 
           <div>
@@ -180,9 +180,9 @@ export function VideoForm({ video, mode }: VideoFormProps) {
         {/* Right panel */}
         <div className="space-y-6">
           {/* Preview */}
-          <div className="bg-white p-5 rounded shadow-sm space-y-3">
-            <h2 className="font-semibold text-ink border-b border-border pb-2">
-              Xem trước
+          <div className="bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl space-y-3 text-white">
+            <h2 className="font-extrabold text-white border-b border-white/10 pb-2 text-sm">
+              Xem trước Video 4K
             </h2>
             {previewId ? (
               <div className="space-y-2">
@@ -221,9 +221,9 @@ export function VideoForm({ video, mode }: VideoFormProps) {
           </div>
 
           {/* Options */}
-          <div className="bg-white p-5 rounded shadow-sm space-y-4">
-            <h2 className="font-semibold text-ink border-b border-border pb-2">
-              Tùy chọn
+          <div className="bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl space-y-4 text-white">
+            <h2 className="font-extrabold text-white border-b border-white/10 pb-2 text-sm">
+              Tùy chọn trạng thái
             </h2>
             <div className="flex items-center justify-between">
               <Label htmlFor="isActive" className="font-normal cursor-pointer">

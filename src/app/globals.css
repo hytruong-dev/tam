@@ -10,77 +10,32 @@
   --font-sans: var(--font-body);
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-
-  /* ThienTam design tokens */
-  --color-charcoal: #0D1117;
-  --color-ivory: #F6F0E5;
-  --color-gold: #D8B26E;
-  --color-copper: #D66A3A;
-  --color-burgundy: #6D1F2B;
-  --color-ink: #1D232D;
+  --color-[#E05638]: #E05638;
 }
 
 :root {
-  --background: #F6F0E5;
-  --foreground: #1D232D;
-  --card: #ffffff;
-  --card-foreground: #1D232D;
-  --popover: #ffffff;
-  --popover-foreground: #1D232D;
-  --primary: #D66A3A;
+  --background: #0B0E17;
+  --foreground: #F1F5F9;
+  --card: #141824;
+  --card-foreground: #F8FAFC;
+  --popover: #141824;
+  --popover-foreground: #F8FAFC;
+  --primary: #E05638;
   --primary-foreground: #ffffff;
-  --secondary: #0D1117;
+  --secondary: #1F293D;
   --secondary-foreground: #ffffff;
-  --muted: #EAE2D5;
-  --muted-foreground: #667085;
-  --accent: #D8B26E;
-  --accent-foreground: #0D1117;
-  --destructive: #6D1F2B;
-  --border: #E2D9CB;
-  --input: #E2D9CB;
-  --ring: #D66A3A;
-  --radius: 0.375rem;
-  --sidebar: #F6F0E5;
-  --sidebar-foreground: #1D232D;
-  --sidebar-primary: #D66A3A;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #EAE2D5;
-  --sidebar-accent-foreground: #1D232D;
-  --sidebar-border: #E2D9CB;
-  --sidebar-ring: #D66A3A;
+  --muted: #1E2333;
+  --muted-foreground: #94A3B8;
+  --accent: #F59E0B;
+  --accent-foreground: #0B0E17;
+  --destructive: #EF4444;
+  --border: #1F293D;
+  --input: #1F293D;
+  --ring: #E05638;
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -88,53 +43,63 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: #0B0E17;
+    color: #F1F5F9;
     font-family: var(--font-body), "Be Vietnam Pro", sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+  }
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading), "Playfair Display", serif;
+    font-family: var(--font-heading), "Be Vietnam Pro", sans-serif;
   }
+}
+
+/* Custom Scrollbar for Cyberpunk Gaming feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0E17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1F293D;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E05638;
 }
 
 @layer utilities {
   .font-heading {
-    font-family: var(--font-heading), "Playfair Display", serif;
+    font-family: var(--font-heading), "Be Vietnam Pro", sans-serif;
   }
   .font-body {
     font-family: var(--font-body), "Be Vietnam Pro", sans-serif;
   }
-  .text-gold {
-    color: #D8B26E;
+  .bg-glass {
+    background: rgba(20, 24, 36, 0.85);
+    backdrop-filter: blur(12px);
   }
-  .text-copper {
-    color: #D66A3A;
+  .border-glass {
+    border-color: rgba(255, 255, 255, 0.1);
   }
-  .text-burgundy {
-    color: #6D1F2B;
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(224, 86, 56, 0.35);
   }
-  .bg-charcoal {
-    background-color: #0D1117;
+  .glow-red {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
   }
-  .bg-ivory {
-    background-color: #F6F0E5;
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);
   }
-  .bg-gold {
-    background-color: #D8B26E;
-  }
-  .bg-copper {
-    background-color: #D66A3A;
-  }
-  .bg-burgundy {
-    background-color: #6D1F2B;
-  }
-  .border-gold {
-    border-color: #D8B26E;
-  }
-  .border-copper {
-    border-color: #D66A3A;
-  }
-  .product-card-img {
-    aspect-ratio: 2 / 3;
-    object-fit: cover;
+  .text-glow {
+    text-shadow: 0 0 12px rgba(224, 86, 56, 0.5);
   }
 }

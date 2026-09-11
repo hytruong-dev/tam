@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Package } from "lucide-react";
 import { AdminProductTable } from "@/components/admin/ProductTable";
 import { getProducts } from "@/lib/services/product.service";
 import { productQuerySchema } from "@/lib/validations/product";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Quản lý sản phẩm | Admin" };
+export const metadata = { title: "Quản lý sản phẩm Mô hình | ThienTam Admin" };
 
 interface AdminProductsPageProps {
   searchParams: Promise<Record<string, string>>;
@@ -25,18 +25,21 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
   const { products, total, totalPages } = await getProducts(query, true);
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-ink">Sản phẩm</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">{total} sản phẩm</p>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#141824] p-6 rounded-3xl border border-white/10 shadow-2xl">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 text-[#E05638] text-xs font-extrabold uppercase tracking-wider">
+            <Package className="w-4 h-4" /> QUẢN LÝ KHO MÔ HÌNH
+          </div>
+          <h1 className="font-heading text-2xl font-extrabold text-white">Danh Sách Mô Hình Figure</h1>
+          <p className="text-gray-400 text-xs">Tổng cộng {total} sản phẩm mô hình trong kho</p>
         </div>
         <Link
           href="/admin/products/create"
-          className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold/90 text-charcoal font-semibold text-sm px-3 py-2 transition-colors"
+          className="inline-flex items-center justify-center gap-2 bg-[#E05638] hover:bg-[#E05638]/90 text-white font-extrabold text-xs px-5 py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(224,86,56,0.4)]"
         >
           <Plus className="w-4 h-4" />
-          Thêm sản phẩm
+          Thêm Mô Hình Mới
         </Link>
       </div>
 

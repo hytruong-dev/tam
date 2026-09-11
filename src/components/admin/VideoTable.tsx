@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,30 +55,30 @@ export function AdminVideoTable({ videos }: AdminVideoTableProps) {
   };
 
   return (
-    <div className="bg-white rounded shadow-sm">
+    <div className="bg-[#141824] rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="bg-ivory/50">
-              <TableHead className="w-24">Thumbnail</TableHead>
-              <TableHead>Tiêu đề</TableHead>
-              <TableHead className="hidden md:table-cell">Trạng thái</TableHead>
-              <TableHead className="hidden lg:table-cell">Ngày thêm</TableHead>
-              <TableHead className="text-right">Hành động</TableHead>
+            <TableRow className="border-b border-white/10 bg-[#0B0E17]/80 hover:bg-[#0B0E17]/80">
+              <TableHead className="w-28 pl-4 text-gray-400 font-extrabold uppercase text-[10px]">Thumbnail</TableHead>
+              <TableHead className="text-gray-400 font-extrabold uppercase text-[10px]">Tiêu đề Video YouTube Review</TableHead>
+              <TableHead className="hidden md:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Trạng thái</TableHead>
+              <TableHead className="hidden lg:table-cell text-gray-400 font-extrabold uppercase text-[10px]">Ngày tạo</TableHead>
+              <TableHead className="text-right pr-4 text-gray-400 font-extrabold uppercase text-[10px]">Hành động</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="divide-y divide-white/5">
             {videos.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
-                  Chưa có video nào
+                <TableCell colSpan={5} className="text-center py-12 text-gray-400">
+                  Chưa có video review nào.
                 </TableCell>
               </TableRow>
             ) : (
               videos.map((vid) => (
-                <TableRow key={vid.id} className="hover:bg-ivory/30">
-                  <TableCell>
-                    <div className="relative w-20 h-12 overflow-hidden bg-gray-100 rounded flex-shrink-0">
+                <TableRow key={vid.id} className="hover:bg-white/5 border-b border-white/5 transition-colors group">
+                  <TableCell className="pl-4">
+                    <div className="relative w-20 h-12 overflow-hidden bg-[#0B0E17] rounded-xl border border-white/10 flex-shrink-0">
                       <Image
                         src={`https://img.youtube.com/vi/${vid.youtubeId}/mqdefault.jpg`}
                         alt={vid.title}
@@ -91,70 +90,72 @@ export function AdminVideoTable({ videos }: AdminVideoTableProps) {
                   </TableCell>
                   <TableCell>
                     <div>
-                      <p className="font-medium text-sm text-ink line-clamp-1">{vid.title}</p>
+                      <p className="font-bold text-sm text-white group-hover:text-red-400 transition-colors line-clamp-1">
+                        {vid.title}
+                      </p>
                       {vid.description && (
-                        <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                        <p className="text-xs text-gray-400 line-clamp-1 mt-0.5">
                           {vid.description}
                         </p>
                       )}
                     </div>
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    <Badge
-                      variant={vid.isActive ? "default" : "secondary"}
-                      className={
+                    <span
+                      className={`text-[10px] font-extrabold px-2 py-0.5 rounded border ${
                         vid.isActive
-                          ? "bg-green-100 text-green-700 border-green-200"
-                          : "bg-gray-100 text-gray-500"
-                      }
+                          ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                          : "bg-gray-800 text-gray-400 border-gray-700"
+                      }`}
                     >
                       {vid.isActive ? "Hiển thị" : "Ẩn"}
-                    </Badge>
+                    </span>
                   </TableCell>
                   <TableCell className="hidden lg:table-cell">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-gray-400">
                       {formatDate(vid.createdAt)}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
+                  <TableCell className="text-right pr-4">
+                    <div className="flex items-center justify-end gap-1.5">
                       <a
                         href={`https://www.youtube.com/watch?v=${vid.youtubeId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white transition-colors border border-white/10"
                         title="Xem trên YouTube"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                       <Link
                         href={`/admin/videos/${vid.id}/edit`}
-                        className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white transition-colors border border-white/10"
+                        title="Chỉnh sửa"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </Link>
                       <AlertDialog>
                         <AlertDialogTrigger
-                          className="inline-flex items-center justify-center w-7 h-7 rounded hover:bg-red-50 text-destructive transition-colors disabled:opacity-50"
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 transition-colors disabled:opacity-50"
                           disabled={deletingId === vid.id}
+                          title="Xóa video"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="bg-[#141824] border-white/10 text-white">
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Xác nhận xóa video</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Bạn có chắc muốn xóa <strong>"{vid.title}"</strong>? Hành động
-                              này không thể hoàn tác.
+                            <AlertDialogTitle className="text-white">Xác nhận xóa video review</AlertDialogTitle>
+                            <AlertDialogDescription className="text-gray-300">
+                              Bạn có chắc muốn xóa video <strong>"{vid.title}"</strong>? Thao tác này không thể hoàn tác.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Hủy</AlertDialogCancel>
+                            <AlertDialogCancel className="bg-white/10 border-white/10 text-white hover:bg-white/20">Hủy</AlertDialogCancel>
                             <AlertDialogAction
-                              className="bg-destructive hover:bg-destructive/90 text-white"
+                              className="bg-red-600 hover:bg-red-700 text-white"
                               onClick={() => handleDelete(vid.id, vid.title)}
                             >
-                              Xóa
+                              Xóa video
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
