@@ -259,35 +259,35 @@ export function Header() {
         </div>
       </div>
 
-      {/* FREUD / MODERN FLOATING CARD MOBILE DRAWER WITH BODY SCROLL LOCK */}
+      {/* FREUD / MODERN FLOATING CARD MOBILE DRAWER WITH DVH ADAPTIVE HEIGHT */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-in fade-in duration-200 overflow-hidden">
+        <div className="lg:hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-3.5 sm:p-5 animate-in fade-in duration-200 overflow-hidden">
           {/* Backdrop Click Dismiss */}
           <div className="absolute inset-0" onClick={() => setMobileOpen(false)} />
 
-          {/* Floating Card Container */}
-          <div className="relative w-full max-w-sm bg-[#141824] border border-white/15 rounded-[32px] overflow-hidden shadow-2xl flex flex-col z-10 animate-in zoom-in-95 duration-200 max-h-[85vh] sm:max-h-[88vh]">
+          {/* Floating Card Container with Dynamic Viewport Height constraint */}
+          <div className="relative w-full max-w-sm bg-[#141824] border border-white/15 rounded-[32px] overflow-hidden shadow-2xl flex flex-col z-10 animate-in zoom-in-95 duration-200 max-h-[75dvh] sm:max-h-[80vh]">
             {/* Top Banner Header Card with Rounded Bottom */}
-            <div className="bg-gradient-to-br from-[#661508] via-[#992211] to-[#E05638] p-5 text-center text-white relative rounded-b-[28px] shadow-lg flex-shrink-0">
+            <div className="bg-gradient-to-br from-[#661508] via-[#992211] to-[#E05638] pt-3.5 pb-4 px-4 text-center text-white relative rounded-b-[24px] shadow-lg flex-shrink-0">
               {/* Brand Logo Top Left */}
-              <div className="absolute top-4 left-4 flex items-center gap-1.5">
-                <div className="w-6 h-6 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <div className="absolute top-3.5 left-4 flex items-center gap-1.5">
+                <div className="w-5 h-5 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-amber-300" />
                 </div>
-                <span className="text-xs font-extrabold font-heading tracking-tight text-white">thientam</span>
+                <span className="text-[11px] font-extrabold font-heading tracking-tight text-white">thientam</span>
               </div>
 
               {/* Close Button Top Right */}
               <button
                 onClick={() => setMobileOpen(false)}
-                className="absolute top-4 right-4 text-white/80 hover:text-white p-1.5 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/20 transition-all"
+                className="absolute top-3.5 right-4 text-white/80 hover:text-white p-1 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/20 transition-all"
                 aria-label="Close menu"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
 
               {/* User Avatar Circle */}
-              <div className="mt-4 mb-2 flex justify-center">
+              <div className="mt-3 mb-1.5 flex justify-center">
                 <img
                   src={
                     user
@@ -295,35 +295,35 @@ export function Header() {
                       : "https://api.dicebear.com/7.x/avataaars/svg?seed=Shinomiya"
                   }
                   alt={user ? user.displayName : "Shinomiya Kaguya"}
-                  className="w-14 h-14 rounded-full border-4 border-white/30 object-cover shadow-2xl bg-[#0B0E17]"
+                  className="w-12 h-12 rounded-full border-3 border-white/30 object-cover shadow-xl bg-[#0B0E17]"
                 />
               </div>
 
               {/* User Name & Mindful Subtitle */}
-              <h3 className="text-base font-extrabold text-white tracking-tight leading-tight">
+              <h3 className="text-sm font-extrabold text-white tracking-tight leading-tight">
                 {user ? user.displayName : "Shinomiya Kaguya"}
               </h3>
-              <p className="text-[11px] text-white/80 font-medium mt-0.5">
+              <p className="text-[10px] text-white/80 font-medium mt-0.5">
                 {user ? "Authentic Collector Member" : "You are being mindful."}
               </p>
             </div>
 
             {/* Menu Links & Content Body (Inner Scrollable) */}
-            <div className="px-5 py-4 space-y-4 overflow-y-auto text-xs font-semibold flex-1">
+            <div className="px-4 py-3 space-y-3 overflow-y-auto text-xs font-semibold flex-1">
               {/* Mobile Search Input */}
-              <form onSubmit={(e) => handleSearch(e, true)} className="relative mb-2">
+              <form onSubmit={(e) => handleSearch(e, true)} className="relative mb-1">
                 <input
                   ref={mobileSearchRef}
                   type="text"
                   placeholder="Tìm mô hình, Gundam, One Piece..."
-                  className="w-full bg-[#0B0E17] border border-white/15 rounded-full py-2 pl-9 pr-4 text-xs text-white placeholder:text-gray-500 focus:outline-none focus:border-[#E05638]"
+                  className="w-full bg-[#0B0E17] border border-white/15 rounded-full py-1.5 pl-8 pr-3 text-[11px] text-white placeholder:text-gray-500 focus:outline-none focus:border-[#E05638]"
                 />
-                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3 h-3 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
               </form>
 
               {/* Section 1: General (Tùy chọn chung) */}
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-2">
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-1.5">
                   General
                 </p>
                 <div className="space-y-1">
@@ -337,24 +337,24 @@ export function Header() {
                         href={link.href}
                         onClick={() => setMobileOpen(false)}
                         className={cn(
-                          "w-full px-3.5 py-2.5 rounded-2xl flex items-center justify-between transition-all font-bold text-xs border",
+                          "w-full px-3 py-2 rounded-2xl flex items-center justify-between transition-all font-bold text-[11px] border",
                           active
                             ? "bg-white/10 text-white border-white/20 shadow-md backdrop-blur-md"
                             : "text-gray-300 hover:text-white border-transparent hover:bg-white/5"
                         )}
                       >
-                        <div className="flex items-center gap-3">
-                          <Icon className={cn("w-4 h-4", active ? "text-[#E05638]" : "text-gray-400")} />
+                        <div className="flex items-center gap-2.5">
+                          <Icon className={cn("w-3.5 h-3.5", active ? "text-[#E05638]" : "text-gray-400")} />
                           <span>{link.label}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           {link.badge && (
-                            <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">
+                            <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full">
                               {link.badge}
                             </span>
                           )}
                           {active && (
-                            <span className="text-xs" title="Selected">
+                            <span className="text-[11px]" title="Selected">
                               👆
                             </span>
                           )}
@@ -365,29 +365,29 @@ export function Header() {
                 </div>
               </div>
 
-              <div className="border-t border-white/10 my-2" />
+              <div className="border-t border-white/10 my-1.5" />
 
               {/* Section 2: Profile & Management */}
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-2">
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-1.5">
                   Profile
                 </p>
                 <div className="space-y-1">
                   <Link
                     href="/community"
                     onClick={() => setMobileOpen(false)}
-                    className="w-full px-3.5 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition-all"
+                    className="w-full px-3 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2.5 transition-all text-[11px]"
                   >
-                    <Settings className="w-4 h-4 text-gray-400" />
+                    <Settings className="w-3.5 h-3.5 text-gray-400" />
                     <span>Hội Viên Collector</span>
                   </Link>
 
                   <Link
                     href="/admin"
                     onClick={() => setMobileOpen(false)}
-                    className="w-full px-3.5 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition-all"
+                    className="w-full px-3 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-2.5 transition-all text-[11px]"
                   >
-                    <LayoutDashboard className="w-4 h-4 text-amber-400" />
+                    <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" />
                     <span>Admin Operations Studio</span>
                   </Link>
                 </div>
@@ -400,29 +400,29 @@ export function Header() {
                     handleLogout();
                     setMobileOpen(false);
                   }}
-                  className="w-full text-left text-red-400 hover:text-red-300 font-bold px-3.5 py-2.5 flex items-center gap-3 rounded-xl hover:bg-red-600/10 transition-colors mt-2"
+                  className="w-full text-left text-red-400 hover:text-red-300 font-bold px-3 py-2 flex items-center gap-2.5 rounded-xl hover:bg-red-600/10 transition-colors mt-1 text-[11px]"
                 >
-                  <LogOut className="w-4 h-4 text-red-500" />
+                  <LogOut className="w-3.5 h-3.5 text-red-500" />
                   <span>Sign Out</span>
                 </button>
               ) : (
                 <Link
                   href="/auth/login"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full text-left text-[#E05638] hover:text-[#E05638]/90 font-bold px-3.5 py-2.5 flex items-center gap-3 rounded-xl hover:bg-[#E05638]/10 transition-colors mt-2"
+                  className="w-full text-left text-[#E05638] hover:text-[#E05638]/90 font-bold px-3 py-2 flex items-center gap-2.5 rounded-xl hover:bg-[#E05638]/10 transition-colors mt-1 text-[11px]"
                 >
-                  <UserIcon className="w-4 h-4" />
+                  <UserIcon className="w-3.5 h-3.5" />
                   <span>Đăng nhập / Đăng ký Account</span>
                 </Link>
               )}
             </div>
 
             {/* Bottom Floating Action Pills (Fixed Bottom) */}
-            <div className="p-3.5 bg-[#0B0E17]/90 border-t border-white/10 flex items-center justify-between gap-2.5 flex-shrink-0">
+            <div className="p-3 bg-[#0B0E17]/90 border-t border-white/10 flex items-center justify-between gap-2 flex-shrink-0">
               <Link
                 href="/products"
                 onClick={() => setMobileOpen(false)}
-                className="flex-1 text-center bg-[#8EA85B] hover:bg-[#7e974e] text-white font-extrabold py-2.5 px-4 rounded-full text-xs shadow-lg flex items-center justify-center gap-1 transition-all"
+                className="flex-1 text-center bg-[#8EA85B] hover:bg-[#7e974e] text-white font-extrabold py-2 px-3 rounded-full text-[11px] shadow-lg flex items-center justify-center gap-1 transition-all"
               >
                 <span>Go Pro</span>
                 <Sparkles className="w-3 h-3 text-white" />
@@ -430,7 +430,7 @@ export function Header() {
               <Link
                 href="/videos"
                 onClick={() => setMobileOpen(false)}
-                className="flex-1 text-center bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold py-2.5 px-3 rounded-full text-xs transition-colors truncate"
+                className="flex-1 text-center bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold py-2 px-3 rounded-full text-[11px] transition-colors truncate"
               >
                 Rate Our App
               </Link>
