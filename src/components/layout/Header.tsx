@@ -3,15 +3,33 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { Menu, Search, X, Heart, ShoppingBag, User as UserIcon, LogOut, Video, Sparkles, Flame, ShieldCheck } from "lucide-react";
+import {
+  Menu,
+  Search,
+  X,
+  Heart,
+  ShoppingBag,
+  User as UserIcon,
+  LogOut,
+  Video,
+  Sparkles,
+  Flame,
+  ShieldCheck,
+  Package,
+  MessageSquare,
+  ChevronRight,
+  Settings,
+  CreditCard,
+  LayoutDashboard,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const navLinks = [
-  { href: "/", label: "Trang chủ", match: (p: string) => p === "/" },
-  { href: "/products", label: "Shop Mô Hình", match: (p: string) => p.startsWith("/products") },
-  { href: "/videos", label: "Video Review", match: (p: string) => p.startsWith("/videos"), badge: "HOT" },
-  { href: "/community", label: "Cộng Đồng Collector", match: (p: string) => p.startsWith("/community") },
+  { href: "/", label: "Trang chủ", icon: Sparkles, match: (p: string) => p === "/" },
+  { href: "/products", label: "Shop Mô Hình", icon: Package, match: (p: string) => p.startsWith("/products") },
+  { href: "/videos", label: "Video Review 4K", icon: Video, match: (p: string) => p.startsWith("/videos"), badge: "HOT" },
+  { href: "/community", label: "Cộng Đồng Collector", icon: MessageSquare, match: (p: string) => p.startsWith("/community") },
 ];
 
 interface UserProfile {
@@ -50,7 +68,7 @@ export function Header() {
   const handleLogout = async () => {
     await fetch("/api/customer-auth/logout", { method: "POST" });
     setUser(null);
-    toast.success("Đã đăng xuất");
+    toast.success("Đã đăng xuất tài khoản");
     router.push("/");
     router.refresh();
   };
@@ -145,7 +163,7 @@ export function Header() {
 
             {/* Action Icons */}
             <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-              {/* Video Review Link - sm and up */}
+              {/* Video Review Link */}
               <Link
                 href="/videos"
                 className="hidden sm:flex flex-col items-center gap-0.5 text-gray-300 hover:text-red-500 transition-colors group"
@@ -155,7 +173,7 @@ export function Header() {
                 <span className="text-[10px] font-semibold text-gray-400 group-hover:text-red-400">Video Review</span>
               </Link>
 
-              {/* Wishlist Link - sm and up */}
+              {/* Wishlist Link */}
               <Link
                 href="/products"
                 className="hidden sm:flex flex-col items-center gap-0.5 text-gray-300 hover:text-[#E05638] transition-colors group"
@@ -164,7 +182,7 @@ export function Header() {
                 <span className="text-[10px] font-semibold text-gray-400 group-hover:text-[#E05638]">Yêu thích</span>
               </Link>
 
-              {/* Cart Link - visible on mobile with badge */}
+              {/* Cart Link */}
               <Link
                 href="/products"
                 className="flex flex-col items-center gap-0.5 text-gray-300 hover:text-[#E05638] transition-colors group relative px-1 sm:px-0"
@@ -179,7 +197,7 @@ export function Header() {
                 <span className="hidden sm:inline text-[10px] font-semibold text-gray-400 group-hover:text-[#E05638]">Giỏ hàng</span>
               </Link>
 
-              {/* User Account Link - sm and up */}
+              {/* User Account Link */}
               {user ? (
                 <div className="hidden sm:flex items-center gap-2 border-l border-white/10 pl-3">
                   <Link
@@ -216,112 +234,190 @@ export function Header() {
               {/* Mobile menu trigger */}
               <button
                 className="lg:hidden p-2 text-gray-300 hover:text-[#E05638] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center"
-                onClick={() => setMobileOpen(!mobileOpen)}
+                onClick={() => setMobileOpen(true)}
                 aria-label="Toggle Navigation Menu"
               >
-                {mobileOpen ? <X className="w-5 h-5 text-[#E05638]" /> : <Menu className="w-5 h-5" />}
+                <Menu className="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile & iPad 100% FULL SCREEN WIDTH Glass Drawer */}
+      {/* FREUD / MODERN FLOATING CARD MOBILE DRAWER (Exact Match to Design Screenshot) */}
       {mobileOpen && (
-        <div className="lg:hidden w-full bg-[#0B0E17]/98 backdrop-blur-2xl border-t border-white/15 shadow-2xl animate-in slide-in-from-top-4 duration-300">
-          <div className="container mx-auto px-4 py-5 space-y-4 max-w-7xl">
-            {/* Mobile Account Status Bar */}
-            <div className="p-3 bg-[#141824] rounded-2xl border border-white/10 flex items-center justify-between">
-              {user ? (
-                <div className="flex items-center gap-3">
-                  <img
-                    src={user.avatarUrl || "https://api.dicebear.com/7.x/bottts/svg?seed=user"}
-                    alt={user.displayName}
-                    className="w-9 h-9 rounded-full border-2 border-[#E05638] object-cover"
-                  />
-                  <div>
-                    <p className="text-xs font-extrabold text-white">{user.displayName}</p>
-                    <p className="text-[10px] text-emerald-400 font-semibold">Collector Member</p>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  href="/auth/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2.5 text-xs font-extrabold text-white hover:text-[#E05638] transition-colors"
-                >
-                  <div className="w-8 h-8 rounded-full bg-[#E05638]/20 border border-[#E05638]/40 flex items-center justify-center text-[#E05638]">
-                    <UserIcon className="w-4 h-4" />
-                  </div>
-                  <span>Đăng nhập / Đăng ký Tài khoản</span>
-                </Link>
-              )}
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center sm:justify-end p-3 sm:p-5 animate-in fade-in duration-200">
+          {/* Backdrop Click Dismiss */}
+          <div className="absolute inset-0" onClick={() => setMobileOpen(false)} />
 
-              {user && (
+          {/* Floating Card Container */}
+          <div className="relative w-full max-w-sm bg-[#141824] border border-white/15 rounded-[32px] overflow-hidden shadow-2xl flex flex-col my-auto z-10 animate-in zoom-in-95 duration-200 max-h-[92vh]">
+            {/* Top Banner Header Card with Rounded Bottom */}
+            <div className="bg-gradient-to-br from-[#661508] via-[#992211] to-[#E05638] p-6 text-center text-white relative rounded-b-[28px] shadow-lg flex-shrink-0">
+              {/* Brand Logo Top Left */}
+              <div className="absolute top-4 left-4 flex items-center gap-1.5">
+                <div className="w-6 h-6 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                </div>
+                <span className="text-xs font-extrabold font-heading tracking-tight text-white">thientam</span>
+              </div>
+
+              {/* Close Button Top Right */}
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="absolute top-4 right-4 text-white/80 hover:text-white p-1.5 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/20 transition-all"
+                aria-label="Close menu"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* User Avatar Circle */}
+              <div className="mt-4 mb-2 flex justify-center">
+                <img
+                  src={
+                    user
+                      ? user.avatarUrl || "https://api.dicebear.com/7.x/bottts/svg?seed=user"
+                      : "https://api.dicebear.com/7.x/avataaars/svg?seed=Shinomiya"
+                  }
+                  alt={user ? user.displayName : "Shinomiya Kaguya"}
+                  className="w-16 h-16 rounded-full border-4 border-white/30 object-cover shadow-2xl bg-[#0B0E17]"
+                />
+              </div>
+
+              {/* User Name & Mindful Subtitle */}
+              <h3 className="text-base font-extrabold text-white tracking-tight">
+                {user ? user.displayName : "Shinomiya Kaguya"}
+              </h3>
+              <p className="text-[11px] text-white/80 font-medium mt-0.5">
+                {user ? "Authentic Collector Member" : "You are being mindful."}
+              </p>
+            </div>
+
+            {/* Menu Links & Content Body */}
+            <div className="px-5 py-4 space-y-4 overflow-y-auto text-xs font-semibold flex-1">
+              {/* Mobile Search Input */}
+              <form onSubmit={(e) => handleSearch(e, true)} className="relative mb-2">
+                <input
+                  ref={mobileSearchRef}
+                  type="text"
+                  placeholder="Tìm mô hình, Gundam, One Piece..."
+                  className="w-full bg-[#0B0E17] border border-white/15 rounded-full py-2 pl-9 pr-4 text-xs text-white placeholder:text-gray-500 focus:outline-none focus:border-[#E05638]"
+                />
+                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              </form>
+
+              {/* Section 1: General (Tùy chọn chung) */}
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-2">
+                  General
+                </p>
+                <div className="space-y-1">
+                  {navLinks.map((link) => {
+                    const active = link.match(pathname);
+                    const Icon = link.icon;
+
+                    return (
+                      <Link
+                        key={link.label}
+                        href={link.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={cn(
+                          "w-full px-3.5 py-2.5 rounded-2xl flex items-center justify-between transition-all font-bold text-xs border",
+                          active
+                            ? "bg-white/10 text-white border-white/20 shadow-md backdrop-blur-md"
+                            : "text-gray-300 hover:text-white border-transparent hover:bg-white/5"
+                        )}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className={cn("w-4 h-4", active ? "text-[#E05638]" : "text-gray-400")} />
+                          <span>{link.label}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {link.badge && (
+                            <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full">
+                              {link.badge}
+                            </span>
+                          )}
+                          {active && (
+                            <span className="text-xs" title="Selected">
+                              👆
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="border-t border-white/10 my-2" />
+
+              {/* Section 2: Profile & Management */}
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-2">
+                  Profile
+                </p>
+                <div className="space-y-1">
+                  <Link
+                    href="/community"
+                    onClick={() => setMobileOpen(false)}
+                    className="w-full px-3.5 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition-all"
+                  >
+                    <Settings className="w-4 h-4 text-gray-400" />
+                    <span>Hội Viên Collector</span>
+                  </Link>
+
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileOpen(false)}
+                    className="w-full px-3.5 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 flex items-center gap-3 transition-all"
+                  >
+                    <LayoutDashboard className="w-4 h-4 text-amber-400" />
+                    <span>Admin Operations Studio</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Sign Out Button */}
+              {user ? (
                 <button
                   onClick={() => {
                     handleLogout();
                     setMobileOpen(false);
                   }}
-                  className="px-3 py-1.5 bg-red-600/20 text-red-400 hover:bg-red-600 text-xs font-extrabold rounded-lg border border-red-500/30 flex items-center gap-1 transition-all"
+                  className="w-full text-left text-red-400 hover:text-red-300 font-bold px-3.5 py-2.5 flex items-center gap-3 rounded-xl hover:bg-red-600/10 transition-colors mt-2"
                 >
-                  <LogOut className="w-3.5 h-3.5" /> Đăng xuất
+                  <LogOut className="w-4 h-4 text-red-500" />
+                  <span>Sign Out</span>
                 </button>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="w-full text-left text-[#E05638] hover:text-[#E05638]/90 font-bold px-3.5 py-2.5 flex items-center gap-3 rounded-xl hover:bg-[#E05638]/10 transition-colors mt-2"
+                >
+                  <UserIcon className="w-4 h-4" />
+                  <span>Đăng nhập / Đăng ký Account</span>
+                </Link>
               )}
             </div>
 
-            {/* Mobile Search Form */}
-            <form onSubmit={(e) => handleSearch(e, true)} className="relative">
-              <input
-                ref={mobileSearchRef}
-                type="text"
-                placeholder="Tìm mô hình, Gundam, One Piece, Hot Toys..."
-                className="w-full bg-[#141824] border border-white/20 rounded-full py-2.5 pl-10 pr-4 text-xs text-white placeholder:text-gray-400 focus:outline-none focus:border-[#E05638] focus:ring-1 focus:ring-[#E05638]"
-              />
-              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            </form>
-
-            {/* Mobile Nav Links */}
-            <div className="grid grid-cols-1 gap-1.5 pt-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={cn(
-                    "block text-sm py-2.5 px-4 rounded-xl transition-all flex items-center justify-between font-bold border",
-                    link.match(pathname)
-                      ? "text-[#E05638] bg-[#E05638]/10 border-[#E05638]/40 shadow-[0_0_15px_rgba(224,86,56,0.2)]"
-                      : "text-gray-200 hover:text-white bg-[#141824]/60 border-white/5 hover:border-white/20"
-                  )}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <span>{link.label}</span>
-                  {link.badge && (
-                    <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white text-[9px] font-extrabold px-2.5 py-0.5 rounded-full animate-pulse">
-                      {link.badge}
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
-
-            {/* Quick Mobile Action Cards */}
-            <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/10">
+            {/* Bottom Floating Action Pills (Exact match to screenshot bottom pills) */}
+            <div className="p-3.5 bg-[#0B0E17]/90 border-t border-white/10 flex items-center justify-between gap-2.5 flex-shrink-0">
+              <Link
+                href="/products"
+                onClick={() => setMobileOpen(false)}
+                className="flex-1 text-center bg-[#8EA85B] hover:bg-[#7e974e] text-white font-extrabold py-2.5 px-4 rounded-full text-xs shadow-lg flex items-center justify-center gap-1 transition-all"
+              >
+                <span>Go Pro</span>
+                <Sparkles className="w-3 h-3 text-white" />
+              </Link>
               <Link
                 href="/videos"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-red-600/15 border border-red-500/30 text-red-400 font-bold text-xs hover:bg-red-600/25 transition-all"
+                className="flex-1 text-center bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold py-2.5 px-3 rounded-full text-xs transition-colors truncate"
               >
-                <Video className="w-4 h-4 text-red-500" />
-                <span>Video Review 4K</span>
-              </Link>
-              <Link
-                href="/admin"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 font-bold text-xs hover:bg-amber-500/25 transition-all"
-              >
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>Admin Studio</span>
+                Rate Our App
               </Link>
             </div>
           </div>
