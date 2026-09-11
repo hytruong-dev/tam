@@ -65,7 +65,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Info Content */}
-      <div className="p-3.5 flex flex-col flex-1 justify-between bg-[#141824]">
+      <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between bg-[#141824]">
         <div>
           <div className="flex items-center gap-1.5 mb-1.5">
             <span className="text-[10px] font-extrabold text-[#E05638] uppercase tracking-wider bg-[#E05638]/15 border border-[#E05638]/30 px-1.5 py-0.5 rounded-md">

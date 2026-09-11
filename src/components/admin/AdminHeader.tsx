@@ -41,7 +41,7 @@ export function AdminHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0B0E17]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+    <header className="sticky top-0 z-50 bg-[#0B0E17]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl w-full">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Admin Logo */}
@@ -119,10 +119,12 @@ export function AdminHeader() {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Nav Drawer */}
-        {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 py-4 space-y-2 bg-[#0B0E17]">
+      {/* Mobile Nav Drawer (100% FULL SCREEN WIDTH) */}
+      {mobileOpen && (
+        <div className="md:hidden w-full bg-[#0B0E17]/98 backdrop-blur-2xl border-t border-white/15 shadow-2xl">
+          <div className="container mx-auto px-4 py-4 space-y-3 max-w-7xl">
             <div className="grid grid-cols-2 gap-2 pb-2">
               {adminNav.map((item) => {
                 const active = item.exact
@@ -165,8 +167,8 @@ export function AdminHeader() {
               </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 }
