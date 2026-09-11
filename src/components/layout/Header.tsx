@@ -55,6 +55,21 @@ export function Header() {
       .catch(() => setUser(null));
   }, [pathname]);
 
+  // Lock body scrolling when mobile navigation drawer is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   const handleSearch = (e: React.FormEvent, isMobile = false) => {
     e.preventDefault();
     const input = isMobile ? mobileSearchRef.current : searchRef.current;
@@ -244,16 +259,16 @@ export function Header() {
         </div>
       </div>
 
-      {/* FREUD / MODERN FLOATING CARD MOBILE DRAWER (Exact Match to Design Screenshot) */}
+      {/* FREUD / MODERN FLOATING CARD MOBILE DRAWER WITH BODY SCROLL LOCK */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center sm:justify-end p-3 sm:p-5 animate-in fade-in duration-200">
+        <div className="lg:hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-in fade-in duration-200 overflow-hidden">
           {/* Backdrop Click Dismiss */}
           <div className="absolute inset-0" onClick={() => setMobileOpen(false)} />
 
           {/* Floating Card Container */}
-          <div className="relative w-full max-w-sm bg-[#141824] border border-white/15 rounded-[32px] overflow-hidden shadow-2xl flex flex-col my-auto z-10 animate-in zoom-in-95 duration-200 max-h-[92vh]">
+          <div className="relative w-full max-w-sm bg-[#141824] border border-white/15 rounded-[32px] overflow-hidden shadow-2xl flex flex-col z-10 animate-in zoom-in-95 duration-200 max-h-[85vh] sm:max-h-[88vh]">
             {/* Top Banner Header Card with Rounded Bottom */}
-            <div className="bg-gradient-to-br from-[#661508] via-[#992211] to-[#E05638] p-6 text-center text-white relative rounded-b-[28px] shadow-lg flex-shrink-0">
+            <div className="bg-gradient-to-br from-[#661508] via-[#992211] to-[#E05638] p-5 text-center text-white relative rounded-b-[28px] shadow-lg flex-shrink-0">
               {/* Brand Logo Top Left */}
               <div className="absolute top-4 left-4 flex items-center gap-1.5">
                 <div className="w-6 h-6 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center">
@@ -280,12 +295,12 @@ export function Header() {
                       : "https://api.dicebear.com/7.x/avataaars/svg?seed=Shinomiya"
                   }
                   alt={user ? user.displayName : "Shinomiya Kaguya"}
-                  className="w-16 h-16 rounded-full border-4 border-white/30 object-cover shadow-2xl bg-[#0B0E17]"
+                  className="w-14 h-14 rounded-full border-4 border-white/30 object-cover shadow-2xl bg-[#0B0E17]"
                 />
               </div>
 
               {/* User Name & Mindful Subtitle */}
-              <h3 className="text-base font-extrabold text-white tracking-tight">
+              <h3 className="text-base font-extrabold text-white tracking-tight leading-tight">
                 {user ? user.displayName : "Shinomiya Kaguya"}
               </h3>
               <p className="text-[11px] text-white/80 font-medium mt-0.5">
@@ -293,7 +308,7 @@ export function Header() {
               </p>
             </div>
 
-            {/* Menu Links & Content Body */}
+            {/* Menu Links & Content Body (Inner Scrollable) */}
             <div className="px-5 py-4 space-y-4 overflow-y-auto text-xs font-semibold flex-1">
               {/* Mobile Search Input */}
               <form onSubmit={(e) => handleSearch(e, true)} className="relative mb-2">
@@ -402,7 +417,7 @@ export function Header() {
               )}
             </div>
 
-            {/* Bottom Floating Action Pills (Exact match to screenshot bottom pills) */}
+            {/* Bottom Floating Action Pills (Fixed Bottom) */}
             <div className="p-3.5 bg-[#0B0E17]/90 border-t border-white/10 flex items-center justify-between gap-2.5 flex-shrink-0">
               <Link
                 href="/products"
