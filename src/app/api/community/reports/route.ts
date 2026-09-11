@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import { reportSchema } from "@/lib/validations/community";
 import { getCurrentCustomer } from "@/lib/auth/customer-session";
-import { createReport } from "@/lib/repositories/community.repository";
+import { createReport, findPendingReports } from "@/lib/repositories/community.repository";
 
 export const dynamic = "force-dynamic";
+
+export async function GET() {
+  try {
+    const reports = await findPendingReports();
+    return NextResponse.json({ success: true, total: reports.length, data: reports });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, data: [], error: err.message || "Lỗi máy chủ" }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {
