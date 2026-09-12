@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { customerLoginSchema } from "@/lib/validations/customer-auth";
-import { verifyPassword, createCustomerToken, setCustomerSessionCookie } from "@/lib/auth/customer-session";
+import {
+  verifyPassword,
+  createCustomerTokens,
+  setCustomerSessionCookies,
+  ACCESS_TOKEN_DURATION,
+  REFRESH_TOKEN_DURATION,
+} from "@/lib/auth/customer-session";
 import { findUserByEmail } from "@/lib/repositories/user.repository";
 
 export const dynamic = "force-dynamic";
@@ -34,11 +40,24 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = await createCustomerToken(user.id);
-    await setCustomerSessionCookie(token);
+    // Tạo bộ đôi Access Token (15m) & Refresh Token (30d)
+    const { accessToken, refreshToken } = await createCustomerTokens(user.id);
+    await setCustomerSessionCookies(accessToken, refreshToken);
 
     return NextResponse.json({
       data: {
+        user: {
+          id: user.id,
+          email: user.email,
+          displayName: user.displayName,
+          avatarUrl: user.avatarUrl,
+          role: user.role,
+        },
+        accessToken,
+        refreshToken,
+        expiresIn: ACCESS_TOKEN_DURATION,
+        refreshExpiresIn: REFRESH_TOKEN_DURATION,
+        // Dữ liệu tương thích cấp cao
         id: user.id,
         email: user.email,
         displayName: user.displayName,
