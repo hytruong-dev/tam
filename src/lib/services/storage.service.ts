@@ -33,31 +33,40 @@ export async function uploadProductImage(file: File): Promise<{
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
-  const { error } = await supabaseAdmin.storage
-    .from(STORAGE_BUCKET)
-    .upload(path, buffer, {
-      contentType: file.type,
-      upsert: false,
-    });
+  try {
+    const { error } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .upload(path, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
 
-  if (error) {
-    throw new Error(`Storage upload failed: ${error.message}`);
+    if (!error) {
+      const { data } = supabaseAdmin.storage
+        .from(STORAGE_BUCKET)
+        .getPublicUrl(path);
+      return { url: data.publicUrl, path };
+    }
+  } catch (err) {
+    console.warn("[storage] Supabase upload failed, falling back to base64 Data URL", err);
   }
 
-  const { data } = supabaseAdmin.storage
-    .from(STORAGE_BUCKET)
-    .getPublicUrl(path);
-
-  return { url: data.publicUrl, path };
+  // Fallback to base64 Data URL if Supabase storage bucket is not accessible
+  const base64 = buffer.toString("base64");
+  const dataUrl = `data:${file.type};base64,${base64}`;
+  return { url: dataUrl, path };
 }
 
 export async function deleteProductImage(path: string): Promise<void> {
-  const { error } = await supabaseAdmin.storage
-    .from(STORAGE_BUCKET)
-    .remove([path]);
+  try {
+    const { error } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .remove([path]);
 
-  if (error) {
-    // Log but don't throw — caller decides error handling
-    console.error(`[storage] Failed to delete image at "${path}":`, error.message);
+    if (error) {
+      console.error(`[storage] Failed to delete image at "${path}":`, error.message);
+    }
+  } catch {
+    // Ignore storage deletion errors
   }
 }

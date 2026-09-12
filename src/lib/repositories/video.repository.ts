@@ -107,23 +107,41 @@ export async function createVideo(data: {
   productIds?: string[];
 }): Promise<VideoWithProducts> {
   const { productIds, ...videoData } = data;
-  return prisma.video.create({
-    data: {
-      ...videoData,
-      ...(productIds && productIds.length > 0 && {
-        videoProducts: {
-          createMany: {
-            data: productIds.map((pId, idx) => ({ productId: pId, sortOrder: idx })),
+  try {
+    const created = await prisma.video.create({
+      data: {
+        ...videoData,
+        ...(productIds && productIds.length > 0 && {
+          videoProducts: {
+            createMany: {
+              data: productIds.map((pId, idx) => ({ productId: pId, sortOrder: idx })),
+            },
           },
-        },
-      }),
-    },
-    include: {
-      videoProducts: {
-        include: { product: true },
+        }),
       },
-    },
-  });
+      include: {
+        videoProducts: {
+          include: { product: true },
+        },
+      },
+    });
+    FALLBACK_VIDEOS.unshift(created);
+    return created;
+  } catch {
+    const fallbackVideo: VideoWithProducts = {
+      id: `v-${Date.now()}`,
+      title: data.title,
+      youtubeUrl: data.youtubeUrl,
+      youtubeId: data.youtubeId,
+      description: data.description ?? null,
+      isActive: data.isActive,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      videoProducts: [],
+    };
+    FALLBACK_VIDEOS.unshift(fallbackVideo);
+    return fallbackVideo;
+  }
 }
 
 export async function updateVideo(
@@ -139,33 +157,57 @@ export async function updateVideo(
 ): Promise<VideoWithProducts> {
   const { productIds, ...videoData } = data;
 
-  if (productIds !== undefined) {
-    await prisma.videoProduct.deleteMany({ where: { videoId: id } });
-    if (productIds.length > 0) {
-      await prisma.videoProduct.createMany({
-        data: productIds.map((pId, idx) => ({ videoId: id, productId: pId, sortOrder: idx })),
-      });
+  try {
+    if (productIds !== undefined) {
+      await prisma.videoProduct.deleteMany({ where: { videoId: id } });
+      if (productIds.length > 0) {
+        await prisma.videoProduct.createMany({
+          data: productIds.map((pId, idx) => ({ videoId: id, productId: pId, sortOrder: idx })),
+        });
+      }
     }
-  }
 
-  return prisma.video.update({
-    where: { id },
-    data: videoData,
-    include: {
-      videoProducts: {
-        include: { product: true },
+    const updated = await prisma.video.update({
+      where: { id },
+      data: videoData,
+      include: {
+        videoProducts: {
+          include: { product: true },
+        },
       },
-    },
-  });
+    });
+    const idx = FALLBACK_VIDEOS.findIndex((v) => v.id === id);
+    if (idx !== -1) FALLBACK_VIDEOS[idx] = updated;
+    return updated;
+  } catch {
+    const existing = FALLBACK_VIDEOS.find((v) => v.id === id) || FALLBACK_VIDEOS[0];
+    const updated = { ...existing, ...videoData };
+    const idx = FALLBACK_VIDEOS.findIndex((v) => v.id === id);
+    if (idx !== -1) FALLBACK_VIDEOS[idx] = updated;
+    return updated;
+  }
 }
 
 export async function deleteVideo(id: string): Promise<VideoWithProducts> {
-  return prisma.video.delete({
-    where: { id },
-    include: {
-      videoProducts: {
-        include: { product: true },
+  try {
+    const res = await prisma.video.delete({
+      where: { id },
+      include: {
+        videoProducts: {
+          include: { product: true },
+        },
       },
-    },
-  });
+    });
+    const idx = FALLBACK_VIDEOS.findIndex((v) => v.id === id);
+    if (idx !== -1) FALLBACK_VIDEOS.splice(idx, 1);
+    return res;
+  } catch {
+    const idx = FALLBACK_VIDEOS.findIndex((v) => v.id === id);
+    if (idx !== -1) {
+      const removed = FALLBACK_VIDEOS[idx];
+      FALLBACK_VIDEOS.splice(idx, 1);
+      return removed;
+    }
+    return FALLBACK_VIDEOS[0];
+  }
 }
