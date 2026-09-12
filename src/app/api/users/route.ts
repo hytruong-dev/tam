@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findAllUsers } from "@/lib/repositories/user.repository";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -10,22 +12,25 @@ export async function GET(req: NextRequest) {
     const limit = searchParams.get("limit") ? Number(searchParams.get("limit")) : undefined;
 
     const users = await findAllUsers({ search, role, status, limit });
+    const formatted = users.map((u) => ({
+      id: u.id,
+      email: u.email,
+      displayName: u.displayName,
+      avatarUrl: u.avatarUrl,
+      role: u.role,
+      status: u.status,
+      createdAt: u.createdAt,
+    }));
+
     return NextResponse.json({
       success: true,
-      total: users.length,
-      data: users.map((u) => ({
-        id: u.id,
-        email: u.email,
-        displayName: u.displayName,
-        avatarUrl: u.avatarUrl,
-        role: u.role,
-        status: u.status,
-        createdAt: u.createdAt,
-      })),
+      total: formatted.length,
+      data: formatted,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to fetch users" },
+      { success: false, data: null, error: error.message || "Failed to fetch users" },
       { status: 500 }
     );
   }

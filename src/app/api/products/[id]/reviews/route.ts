@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 interface Review {
   id: string;
   productId: string;
@@ -58,10 +60,11 @@ export async function GET(
       total: reviews.length,
       averageRating,
       data: reviews,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to fetch reviews" },
+      { success: false, data: null, error: error.message || "Failed to fetch reviews" },
       { status: 500 }
     );
   }
@@ -77,7 +80,7 @@ export async function POST(
 
     if (!body.comment || !body.rating) {
       return NextResponse.json(
-        { success: false, message: "Vui lòng nhập đánh giá và số sao" },
+        { success: false, data: null, error: "Vui lòng nhập đánh giá và số sao" },
         { status: 400 }
       );
     }
@@ -99,12 +102,13 @@ export async function POST(
         success: true,
         message: "Cảm ơn bạn đã gửi đánh giá mô hình!",
         data: newReview,
+        error: null,
       },
       { status: 201 }
     );
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to post review" },
+      { success: false, data: null, error: error.message || "Failed to post review" },
       { status: 500 }
     );
   }

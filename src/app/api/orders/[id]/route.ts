@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findOrderById, updateOrderStatus, OrderStatus } from "@/lib/repositories/order.repository";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -11,7 +13,7 @@ export async function GET(
 
     if (!order) {
       return NextResponse.json(
-        { success: false, message: "Order not found" },
+        { success: false, data: null, error: "Order not found" },
         { status: 404 }
       );
     }
@@ -19,10 +21,11 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: order,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to fetch order" },
+      { success: false, data: null, error: error.message || "Failed to fetch order" },
       { status: 500 }
     );
   }
@@ -38,7 +41,7 @@ export async function PUT(
 
     if (!body.status) {
       return NextResponse.json(
-        { success: false, message: "Missing order status" },
+        { success: false, data: null, error: "Missing order status" },
         { status: 400 }
       );
     }
@@ -46,7 +49,7 @@ export async function PUT(
     const updated = await updateOrderStatus(id, body.status as OrderStatus);
     if (!updated) {
       return NextResponse.json(
-        { success: false, message: "Order not found" },
+        { success: false, data: null, error: "Order not found" },
         { status: 404 }
       );
     }
@@ -55,10 +58,11 @@ export async function PUT(
       success: true,
       message: "Order status updated successfully",
       data: updated,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to update order status" },
+      { success: false, data: null, error: error.message || "Failed to update order status" },
       { status: 500 }
     );
   }

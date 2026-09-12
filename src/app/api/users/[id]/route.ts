@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findUserById, updateUser, deleteUser } from "@/lib/repositories/user.repository";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -10,7 +12,7 @@ export async function GET(
     const user = await findUserById(id);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, data: null, error: "User not found" },
         { status: 404 }
       );
     }
@@ -26,10 +28,11 @@ export async function GET(
         status: user.status,
         createdAt: user.createdAt,
       },
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to fetch user" },
+      { success: false, data: null, error: error.message || "Failed to fetch user" },
       { status: 500 }
     );
   }
@@ -54,10 +57,11 @@ export async function PUT(
       success: true,
       message: "User updated successfully",
       data: updated,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to update user" },
+      { success: false, data: null, error: error.message || "Failed to update user" },
       { status: 500 }
     );
   }
@@ -69,14 +73,16 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    await deleteUser(id);
+    const deleted = await deleteUser(id);
     return NextResponse.json({
       success: true,
       message: "User deleted successfully",
+      data: deleted,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to delete user" },
+      { success: false, data: null, error: error.message || "Failed to delete user" },
       { status: 500 }
     );
   }

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findAllOrders, createOrder, OrderStatus } from "@/lib/repositories/order.repository";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -12,10 +14,11 @@ export async function GET(req: NextRequest) {
       success: true,
       total: orders.length,
       data: orders,
+      error: null,
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to fetch orders" },
+      { success: false, data: null, error: error.message || "Failed to fetch orders" },
       { status: 500 }
     );
   }
@@ -27,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     if (!body.customerName || !body.customerPhone || !body.shippingAddress || !body.items || body.items.length === 0) {
       return NextResponse.json(
-        { success: false, message: "Vui lòng nhập đầy đủ thông tin giao hàng và sản phẩm" },
+        { success: false, data: null, error: "Vui lòng nhập đầy đủ thông tin giao hàng và sản phẩm" },
         { status: 400 }
       );
     }
@@ -47,12 +50,13 @@ export async function POST(req: NextRequest) {
         success: true,
         message: "Đặt hàng mô hình thành công!",
         data: order,
+        error: null,
       },
       { status: 201 }
     );
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, message: error.message || "Failed to create order" },
+      { success: false, data: null, error: error.message || "Failed to create order" },
       { status: 500 }
     );
   }

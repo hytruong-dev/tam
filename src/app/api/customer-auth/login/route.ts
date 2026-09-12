@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { customerLoginSchema } from "@/lib/validations/customer-auth";
 import { verifyPassword, createCustomerToken, setCustomerSessionCookie } from "@/lib/auth/customer-session";
-import { prisma } from "@/lib/prisma";
+import { findUserByEmail } from "@/lib/repositories/user.repository";
 
 export const dynamic = "force-dynamic";
 
@@ -12,14 +12,14 @@ export async function POST(request: Request) {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { data: null, error: "Dữ liệu không hợp lệ" },
+        { data: null, error: "Vui lòng nhập đầy đủ Email và Mật khẩu" },
         { status: 400 }
       );
     }
 
     const { email, password } = parsed.data;
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await findUserByEmail(email);
     if (!user || !verifyPassword(password, user.passwordHash)) {
       return NextResponse.json(
         { data: null, error: "Email hoặc mật khẩu không chính xác" },
@@ -47,8 +47,11 @@ export async function POST(request: Request) {
       },
       error: null,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[customer/login]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json(
+      { data: null, error: err.message || "Lỗi đăng nhập máy chủ" },
+      { status: 500 }
+    );
   }
 }

@@ -8,7 +8,7 @@ export interface UserFilterOptions {
   limit?: number;
 }
 
-export const FALLBACK_USERS = [
+export const FALLBACK_USERS: User[] = [
   {
     id: "u1-master",
     email: "admin@thientamfigure.com",
@@ -21,7 +21,7 @@ export const FALLBACK_USERS = [
     updatedAt: new Date("2026-01-01"),
   },
   {
-    id: "u2-[#1]",
+    id: "u2-1",
     email: "minhtu.figure@gmail.com",
     passwordHash: "hash-secret",
     displayName: "MinhTu Collector PRO",
@@ -32,7 +32,7 @@ export const FALLBACK_USERS = [
     updatedAt: new Date("2026-02-15"),
   },
   {
-    id: "u3-[#2]",
+    id: "u3-2",
     email: "gundamfan99@gmail.com",
     passwordHash: "hash-secret",
     displayName: "Gundam Builder VN",
@@ -43,7 +43,7 @@ export const FALLBACK_USERS = [
     updatedAt: new Date("2026-03-01"),
   },
   {
-    id: "u4-[#3]",
+    id: "u4-3",
     email: "hottoys.lover@outlook.com",
     passwordHash: "hash-secret",
     displayName: "IronMan HotToys Collector",
@@ -103,25 +103,95 @@ export async function findUserById(id: string): Promise<User | null> {
   return FALLBACK_USERS.find((u) => u.id === id) || null;
 }
 
+export async function findUserByEmail(email: string): Promise<User | null> {
+  try {
+    const res = await prisma.user.findUnique({ where: { email } });
+    if (res) return res;
+  } catch {
+    // Fallback
+  }
+  return FALLBACK_USERS.find((u) => u.email.toLowerCase() === email.toLowerCase()) || null;
+}
+
+export async function createUser(data: {
+  email: string;
+  passwordHash: string;
+  displayName: string;
+  avatarUrl?: string;
+  role?: UserRole;
+}): Promise<User> {
+  const avatarUrl =
+    data.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(data.displayName)}`;
+
+  try {
+    const newUser = await prisma.user.create({
+      data: {
+        email: data.email,
+        passwordHash: data.passwordHash,
+        displayName: data.displayName,
+        avatarUrl,
+        role: data.role || "MEMBER",
+        status: "ACTIVE",
+      },
+    });
+    FALLBACK_USERS.unshift(newUser);
+    return newUser;
+  } catch (err) {
+    console.error("[createUser fallback]", err);
+    const fallbackUser: User = {
+      id: `u-${Date.now()}`,
+      email: data.email,
+      passwordHash: data.passwordHash,
+      displayName: data.displayName,
+      avatarUrl,
+      role: data.role || "MEMBER",
+      status: "ACTIVE",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    FALLBACK_USERS.unshift(fallbackUser);
+    return fallbackUser;
+  }
+}
+
 export async function updateUser(
   id: string,
   data: { role?: UserRole; status?: UserStatus; displayName?: string; avatarUrl?: string }
 ): Promise<User> {
   try {
-    return await prisma.user.update({
+    const res = await prisma.user.update({
       where: { id },
       data,
     });
+    const index = FALLBACK_USERS.findIndex((u) => u.id === id);
+    if (index !== -1) {
+      FALLBACK_USERS[index] = res;
+    }
+    return res;
   } catch {
     const existing = FALLBACK_USERS.find((u) => u.id === id) || FALLBACK_USERS[0];
-    return { ...existing, ...data, updatedAt: new Date() };
+    const updated = { ...existing, ...data, updatedAt: new Date() };
+    const index = FALLBACK_USERS.findIndex((u) => u.id === id);
+    if (index !== -1) {
+      FALLBACK_USERS[index] = updated;
+    }
+    return updated;
   }
 }
 
 export async function deleteUser(id: string): Promise<User | null> {
   try {
-    return await prisma.user.delete({ where: { id } });
+    const res = await prisma.user.delete({ where: { id } });
+    const index = FALLBACK_USERS.findIndex((u) => u.id === id);
+    if (index !== -1) FALLBACK_USERS.splice(index, 1);
+    return res;
   } catch {
-    return FALLBACK_USERS.find((u) => u.id === id) || null;
+    const index = FALLBACK_USERS.findIndex((u) => u.id === id);
+    if (index !== -1) {
+      const removed = FALLBACK_USERS[index];
+      FALLBACK_USERS.splice(index, 1);
+      return removed;
+    }
+    return null;
   }
 }

@@ -2,7 +2,7 @@ import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { pbkdf2Sync, randomBytes } from "crypto";
-import { prisma } from "@/lib/prisma";
+import { findUserById } from "@/lib/repositories/user.repository";
 import type { User } from "@prisma/client";
 
 const CUSTOMER_COOKIE = "customer_session";
@@ -62,14 +62,18 @@ export async function clearCustomerSessionCookie(): Promise<void> {
 }
 
 export async function getCurrentCustomer(): Promise<User | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(CUSTOMER_COOKIE)?.value;
-  if (!token) return null;
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(CUSTOMER_COOKIE)?.value;
+    if (!token) return null;
 
-  const verified = await verifyCustomerToken(token);
-  if (!verified) return null;
+    const verified = await verifyCustomerToken(token);
+    if (!verified) return null;
 
-  return prisma.user.findUnique({
-    where: { id: verified.userId, status: "ACTIVE" },
-  });
+    const user = await findUserById(verified.userId);
+    if (user && user.status === "ACTIVE") return user;
+    return null;
+  } catch {
+    return null;
+  }
 }
