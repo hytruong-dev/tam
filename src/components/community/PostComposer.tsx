@@ -6,6 +6,7 @@ import { Loader2, Image as ImageIcon, Send, Sparkles, LogIn } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { getErrorMessage } from "@/lib/utils";
 
 interface PostComposerProps {
   onPostCreated?: () => void;
@@ -69,7 +70,7 @@ export function PostComposer({ onPostCreated, currentUser }: PostComposerProps) 
 
       const json = await res.json();
       if (!res.ok) {
-        toast.error(json.error || "Không thể đăng bài viết");
+        toast.error(getErrorMessage(json.error, "Không thể đăng bài viết"));
         return;
       }
 

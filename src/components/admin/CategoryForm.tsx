@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { categorySchema, type CategoryInput } from "@/lib/validations/category";
-import { slugify } from "@/lib/utils";
+import { slugify, getErrorMessage } from "@/lib/utils";
 import type { Category } from "@prisma/client";
 
 interface CategoryFormProps {
@@ -58,16 +58,7 @@ export function CategoryForm({ category, mode }: CategoryFormProps) {
       const json = await res.json();
 
       if (!res.ok) {
-        if (res.status === 409) {
-          toast.error("Slug đã tồn tại, vui lòng chọn slug khác");
-        } else if (json.error?.fieldErrors) {
-          const firstError = Object.values(
-            json.error.fieldErrors as Record<string, string[]>
-          )[0]?.[0];
-          toast.error(firstError || "Dữ liệu không hợp lệ");
-        } else {
-          toast.error(json.error || "Có lỗi xảy ra");
-        }
+        toast.error(getErrorMessage(json.error, "Có lỗi xảy ra khi lưu danh mục"));
         return;
       }
 

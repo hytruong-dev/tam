@@ -29,7 +29,7 @@ export const productSchema = z.object({
   description: z
     .string()
     .min(1, "Mô tả chi tiết không được để trống"),
-  imageUrl: z.string().url("URL ảnh không hợp lệ"),
+  imageUrl: z.string().min(1, "URL hoặc đường dẫn ảnh không hợp lệ"),
   imagePath: z.string().optional().nullable(),
   price: z
     .number({ required_error: "Giá bán không được để trống" })
@@ -45,7 +45,7 @@ export const productSchema = z.object({
     .number({ required_error: "Số lượng không được để trống" })
     .int("Số lượng phải là số nguyên")
     .min(0, "Số lượng không được âm"),
-  categoryId: z.string().uuid("Danh mục không hợp lệ"),
+  categoryId: z.string().min(1, "Danh mục không hợp lệ"),
   isFeatured: z.boolean().default(false),
   isNew: z.boolean().default(false),
   isActive: z.boolean().default(true),

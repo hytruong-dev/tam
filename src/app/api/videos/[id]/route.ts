@@ -6,6 +6,7 @@ import {
 } from "@/lib/repositories/video.repository";
 import { isAdminAuthenticated } from "@/lib/auth/session";
 import { videoSchema, extractYoutubeId } from "@/lib/validations/video";
+import { formatZodError } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -20,9 +21,9 @@ export async function GET(
       return NextResponse.json({ data: null, error: "Không tìm thấy video" }, { status: 404 });
     }
     return NextResponse.json({ data: video, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[GET /api/videos/[id]]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể lấy chi tiết video"}` }, { status: 500 });
   }
 }
 
@@ -37,10 +38,20 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json().catch((err) => {
+      console.error("[PUT /api/videos/[id]] JSON parse error:", err);
+      return null;
+    });
+
+    if (!body) {
+      return NextResponse.json({ data: null, error: "Dữ liệu gửi lên không đúng định dạng JSON" }, { status: 400 });
+    }
+
     const parsed = videoSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ data: null, error: parsed.error.flatten() }, { status: 422 });
+      const errorMsg = formatZodError(parsed.error);
+      console.error("[PUT /api/videos/[id]] Validation error:", errorMsg);
+      return NextResponse.json({ data: null, error: `Dữ liệu video không hợp lệ: ${errorMsg}` }, { status: 422 });
     }
 
     const existing = await findVideoById(id);
@@ -62,9 +73,9 @@ export async function PUT(
     });
 
     return NextResponse.json({ data: video, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[PUT /api/videos/[id]]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể cập nhật video"}` }, { status: 500 });
   }
 }
 
@@ -86,8 +97,8 @@ export async function DELETE(
 
     const video = await deleteVideo(id);
     return NextResponse.json({ data: video, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[DELETE /api/videos/[id]]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể xóa video"}` }, { status: 500 });
   }
 }

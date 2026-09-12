@@ -8,6 +8,7 @@ import {
 } from "@/lib/repositories/category.repository";
 import { isAdminAuthenticated } from "@/lib/auth/session";
 import { categorySchema } from "@/lib/validations/category";
+import { formatZodError } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -22,9 +23,9 @@ export async function GET(
       return NextResponse.json({ data: null, error: "Không tìm thấy danh mục" }, { status: 404 });
     }
     return NextResponse.json({ data: category, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[GET /api/categories/[id]]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể lấy chi tiết danh mục"}` }, { status: 500 });
   }
 }
 
@@ -39,10 +40,20 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json().catch((err) => {
+      console.error("[PUT /api/categories/[id]] JSON parse error:", err);
+      return null;
+    });
+
+    if (!body) {
+      return NextResponse.json({ data: null, error: "Dữ liệu gửi lên không đúng định dạng JSON" }, { status: 400 });
+    }
+
     const parsed = categorySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ data: null, error: parsed.error.flatten() }, { status: 422 });
+      const errorMsg = formatZodError(parsed.error);
+      console.error("[PUT /api/categories/[id]] Validation error:", errorMsg);
+      return NextResponse.json({ data: null, error: `Dữ liệu danh mục không hợp lệ: ${errorMsg}` }, { status: 422 });
     }
 
     const existing = await findCategoryById(id);
@@ -52,14 +63,14 @@ export async function PUT(
 
     const slugTaken = await checkCategorySlugExists(parsed.data.slug, id);
     if (slugTaken) {
-      return NextResponse.json({ data: null, error: "Slug đã tồn tại" }, { status: 409 });
+      return NextResponse.json({ data: null, error: "Slug danh mục đã tồn tại" }, { status: 409 });
     }
 
     const category = await updateCategory(id, parsed.data);
     return NextResponse.json({ data: category, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[PUT /api/categories/[id]]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể cập nhật danh mục"}` }, { status: 500 });
   }
 }
 
@@ -89,8 +100,8 @@ export async function DELETE(
 
     const category = await deleteCategory(id);
     return NextResponse.json({ data: category, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[DELETE /api/categories/[id]]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể xóa danh mục"}` }, { status: 500 });
   }
 }

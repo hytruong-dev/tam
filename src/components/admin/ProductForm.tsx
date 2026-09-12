@@ -21,7 +21,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { productSchema, type ProductInput } from "@/lib/validations/product";
-import { slugify } from "@/lib/utils";
+import { slugify, getErrorMessage } from "@/lib/utils";
 import type { Category } from "@prisma/client";
 import type { ProductWithCategory } from "@/lib/repositories/product.repository";
 
@@ -105,14 +105,7 @@ export function ProductForm({ categories, product, mode }: ProductFormProps) {
       const json = await res.json();
 
       if (!res.ok) {
-        if (res.status === 409) {
-          toast.error("Slug đã tồn tại, vui lòng chọn slug khác");
-        } else if (json.error?.fieldErrors) {
-          const firstError = Object.values(json.error.fieldErrors as Record<string, string[]>)[0]?.[0];
-          toast.error(firstError || "Dữ liệu không hợp lệ");
-        } else {
-          toast.error(json.error || "Có lỗi xảy ra");
-        }
+        toast.error(getErrorMessage(json.error, "Có lỗi xảy ra khi lưu mô hình"));
         return;
       }
 

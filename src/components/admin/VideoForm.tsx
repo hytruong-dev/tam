@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { videoSchema, type VideoInput, extractYoutubeId } from "@/lib/validations/video";
+import { getErrorMessage } from "@/lib/utils";
 import type { Video } from "@prisma/client";
 
 interface VideoFormProps {
@@ -64,14 +65,7 @@ export function VideoForm({ video, mode }: VideoFormProps) {
       const json = await res.json();
 
       if (!res.ok) {
-        if (json.error?.fieldErrors) {
-          const firstError = Object.values(
-            json.error.fieldErrors as Record<string, string[]>
-          )[0]?.[0];
-          toast.error(firstError || "Dữ liệu không hợp lệ");
-        } else {
-          toast.error(json.error || "Có lỗi xảy ra");
-        }
+        toast.error(getErrorMessage(json.error, "Có lỗi xảy ra khi lưu video"));
         return;
       }
 

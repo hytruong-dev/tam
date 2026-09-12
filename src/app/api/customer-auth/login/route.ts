@@ -8,17 +8,27 @@ import {
   REFRESH_TOKEN_DURATION,
 } from "@/lib/auth/customer-session";
 import { findUserByEmail } from "@/lib/repositories/user.repository";
+import { formatZodError } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const parsed = customerLoginSchema.safeParse(body);
+    const body = await request.json().catch((err) => {
+      console.error("[POST /api/customer-auth/login] JSON parse error:", err);
+      return null;
+    });
 
+    if (!body) {
+      return NextResponse.json({ data: null, error: "Dữ liệu gửi lên không đúng định dạng JSON" }, { status: 400 });
+    }
+
+    const parsed = customerLoginSchema.safeParse(body);
     if (!parsed.success) {
+      const errorMsg = formatZodError(parsed.error);
+      console.error("[POST /api/customer-auth/login] Validation error:", errorMsg);
       return NextResponse.json(
-        { data: null, error: "Vui lòng nhập đầy đủ Email và Mật khẩu" },
+        { data: null, error: `Thông tin đăng nhập không hợp lệ: ${errorMsg}` },
         { status: 400 }
       );
     }
@@ -57,7 +67,6 @@ export async function POST(request: Request) {
         refreshToken,
         expiresIn: ACCESS_TOKEN_DURATION,
         refreshExpiresIn: REFRESH_TOKEN_DURATION,
-        // Dữ liệu tương thích cấp cao
         id: user.id,
         email: user.email,
         displayName: user.displayName,
@@ -69,7 +78,7 @@ export async function POST(request: Request) {
   } catch (err: any) {
     console.error("[customer/login]", err);
     return NextResponse.json(
-      { data: null, error: err.message || "Lỗi đăng nhập máy chủ" },
+      { data: null, error: `Lỗi máy chủ: ${err.message || "Đăng nhập thất bại"}` },
       { status: 500 }
     );
   }

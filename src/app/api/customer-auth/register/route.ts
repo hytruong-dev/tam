@@ -8,17 +8,27 @@ import {
   REFRESH_TOKEN_DURATION,
 } from "@/lib/auth/customer-session";
 import { findUserByEmail, createUser } from "@/lib/repositories/user.repository";
+import { formatZodError } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const parsed = registerSchema.safeParse(body);
+    const body = await request.json().catch((err) => {
+      console.error("[POST /api/customer-auth/register] JSON parse error:", err);
+      return null;
+    });
 
+    if (!body) {
+      return NextResponse.json({ data: null, error: "Dữ liệu gửi lên không đúng định dạng JSON" }, { status: 400 });
+    }
+
+    const parsed = registerSchema.safeParse(body);
     if (!parsed.success) {
+      const errorMsg = formatZodError(parsed.error);
+      console.error("[POST /api/customer-auth/register] Validation error:", errorMsg);
       return NextResponse.json(
-        { data: null, error: "Dữ liệu không hợp lệ. Email, tên hiển thị (ít nhất 2 ký tự) và mật khẩu (ít nhất 6 ký tự)." },
+        { data: null, error: `Dữ liệu đăng ký không hợp lệ: ${errorMsg}` },
         { status: 400 }
       );
     }
@@ -58,7 +68,6 @@ export async function POST(request: Request) {
           refreshToken,
           expiresIn: ACCESS_TOKEN_DURATION,
           refreshExpiresIn: REFRESH_TOKEN_DURATION,
-          // Dữ liệu tương thích cấp cao
           id: user.id,
           email: user.email,
           displayName: user.displayName,
@@ -71,7 +80,7 @@ export async function POST(request: Request) {
   } catch (err: any) {
     console.error("[register]", err);
     return NextResponse.json(
-      { data: null, error: err.message || "Lỗi tạo tài khoản máy chủ" },
+      { data: null, error: `Lỗi máy chủ: ${err.message || "Tạo tài khoản thất bại"}` },
       { status: 500 }
     );
   }

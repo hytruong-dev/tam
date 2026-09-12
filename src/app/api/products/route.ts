@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { productQuerySchema, productSchema } from "@/lib/validations/product";
-
-export const dynamic = "force-dynamic";
 import { getProducts, createNewProduct } from "@/lib/services/product.service";
 import { isAdminAuthenticated } from "@/lib/auth/session";
+import { formatZodError } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
@@ -21,8 +22,10 @@ export async function GET(request: Request) {
 
     const parsed = productQuerySchema.safeParse(rawQuery);
     if (!parsed.success) {
+      const errorMsg = formatZodError(parsed.error);
+      console.error("[GET /api/products] Validation error:", errorMsg);
       return NextResponse.json(
-        { data: null, error: "Query không hợp lệ" },
+        { data: null, error: `Query không hợp lệ: ${errorMsg}` },
         { status: 400 }
       );
     }
@@ -30,9 +33,9 @@ export async function GET(request: Request) {
     const adminMode = parsed.data.admin && (await isAdminAuthenticated());
     const result = await getProducts(parsed.data, !!adminMode);
     return NextResponse.json({ data: result, error: null });
-  } catch (err) {
+  } catch (err: any) {
     console.error("[GET /api/products]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể lấy danh sách sản phẩm"}` }, { status: 500 });
   }
 }
 
@@ -46,25 +49,38 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json().catch((err) => {
+      console.error("[POST /api/products] JSON parse error:", err);
+      return null;
+    });
+
+    if (!body) {
+      return NextResponse.json(
+        { data: null, error: "Dữ liệu gửi lên không đúng định dạng JSON" },
+        { status: 400 }
+      );
+    }
+
     const parsed = productSchema.safeParse(body);
     if (!parsed.success) {
+      const errorMsg = formatZodError(parsed.error);
+      console.error("[POST /api/products] Validation error:", errorMsg);
       return NextResponse.json(
-        { data: null, error: parsed.error.flatten() },
+        { data: null, error: `Dữ liệu sản phẩm không hợp lệ: ${errorMsg}` },
         { status: 422 }
       );
     }
 
     const product = await createNewProduct(parsed.data);
     return NextResponse.json({ data: product, error: null }, { status: 201 });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof Error && err.message === "SLUG_EXISTS") {
       return NextResponse.json(
-        { data: null, error: "Slug đã tồn tại" },
+        { data: null, error: "Slug sản phẩm đã tồn tại" },
         { status: 409 }
       );
     }
     console.error("[POST /api/products]", err);
-    return NextResponse.json({ data: null, error: "Lỗi máy chủ" }, { status: 500 });
+    return NextResponse.json({ data: null, error: `Lỗi máy chủ: ${err.message || "Không thể tạo sản phẩm"}` }, { status: 500 });
   }
 }

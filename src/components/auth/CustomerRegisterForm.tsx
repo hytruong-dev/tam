@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { registerSchema, type RegisterInput } from "@/lib/validations/customer-auth";
+import { getErrorMessage } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,7 +35,7 @@ export function CustomerRegisterForm() {
       const json = await res.json();
 
       if (!res.ok) {
-        toast.error(json.error || "Đăng ký thất bại");
+        toast.error(getErrorMessage(json.error, "Đăng ký thất bại"));
         return;
       }
 
