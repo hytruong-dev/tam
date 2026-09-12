@@ -35,8 +35,8 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-20 flex justify-center">
-        <Loader2 className="w-8 h-8 text-copper animate-spin" />
+      <div className="bg-[#0B0E17] min-h-screen py-20 flex justify-center items-center">
+        <Loader2 className="w-8 h-8 text-[#E05638] animate-spin" />
       </div>
     );
   }
@@ -44,16 +44,18 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
   if (!post) return notFound();
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-3xl">
-      <Link
-        href="/community"
-        className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-copper mb-6 font-medium"
-      >
-        <ArrowLeft className="w-4 h-4" /> Quay lại danh sách bài viết
-      </Link>
+    <div className="bg-[#0B0E17] min-h-screen py-8 text-gray-100">
+      <div className="container mx-auto px-4 max-w-3xl space-y-6">
+        <Link
+          href="/community"
+          className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#E05638] font-bold transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" /> Quay lại danh sách bài viết
+        </Link>
 
-      <PostCard post={post} currentUserId={currentUserId} />
-      <CommentThread postId={post.id} currentUserId={currentUserId} />
+        <PostCard post={post} currentUserId={currentUserId} />
+        <CommentThread postId={post.id} currentUserId={currentUserId} />
+      </div>
     </div>
   );
 }

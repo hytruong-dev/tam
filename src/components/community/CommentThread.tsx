@@ -77,8 +77,8 @@ export function CommentThread({ postId, currentUserId }: CommentThreadProps) {
   };
 
   return (
-    <div className="bg-white rounded border border-border p-5 shadow-sm space-y-4">
-      <h3 className="font-semibold text-ink text-sm">Bình luận ({comments.length})</h3>
+    <div className="bg-[#141824] rounded-3xl border border-white/10 p-5 sm:p-6 shadow-xl space-y-4 text-white">
+      <h3 className="font-extrabold text-white text-sm">Bình luận ({comments.length})</h3>
 
       {/* Input */}
       {currentUserId ? (
@@ -87,16 +87,16 @@ export function CommentThread({ postId, currentUserId }: CommentThreadProps) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Viết bình luận của bạn..."
-            className="text-xs flex-1"
+            className="text-xs flex-1 bg-[#0B0E17] border border-white/15 text-white placeholder:text-gray-500 rounded-xl"
           />
-          <Button type="submit" disabled={submitting} className="bg-copper text-white text-xs px-3">
+          <Button type="submit" disabled={submitting} className="bg-[#E05638] hover:bg-[#E05638]/90 text-white text-xs px-4 rounded-xl font-bold shadow-[0_0_10px_rgba(224,86,56,0.4)]">
             {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
           </Button>
         </form>
       ) : (
-        <p className="text-xs text-muted-foreground bg-ivory/50 p-3 rounded text-center">
+        <p className="text-xs text-gray-400 bg-[#0B0E17]/60 p-3.5 rounded-2xl border border-white/10 text-center">
           Vui lòng{" "}
-          <a href="/auth/login" className="text-copper font-semibold underline">
+          <a href="/auth/login" className="text-[#E05638] font-bold underline">
             Đăng nhập
           </a>{" "}
           để tham gia bình luận.
@@ -105,22 +105,22 @@ export function CommentThread({ postId, currentUserId }: CommentThreadProps) {
 
       {/* List */}
       {loading ? (
-        <p className="text-xs text-muted-foreground">Đang tải bình luận...</p>
+        <p className="text-xs text-gray-400">Đang tải bình luận...</p>
       ) : comments.length === 0 ? (
-        <p className="text-xs text-muted-foreground italic">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+        <p className="text-xs text-gray-500 italic">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
       ) : (
         <div className="space-y-3 pt-2">
           {comments.map((c) => (
-            <div key={c.id} className="flex gap-3 text-xs bg-ivory/20 p-2.5 rounded border border-border/40">
+            <div key={c.id} className="flex gap-3 text-xs bg-[#0B0E17]/80 p-3.5 rounded-2xl border border-white/10">
               <img
                 src={c.author.avatarUrl || "https://api.dicebear.com/7.x/bottts/svg?seed=user"}
                 alt={c.author.displayName}
-                className="w-7 h-7 rounded-full border border-border object-cover flex-shrink-0"
+                className="w-8 h-8 rounded-full border border-white/20 object-cover flex-shrink-0"
               />
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-semibold text-ink">{c.author.displayName}</span>
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="font-extrabold text-white">{c.author.displayName}</span>
+                  <span className="text-[10px] text-gray-400">
                     {new Date(c.createdAt).toLocaleDateString("vi-VN", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -129,7 +129,7 @@ export function CommentThread({ postId, currentUserId }: CommentThreadProps) {
                     })}
                   </span>
                 </div>
-                <p className="text-ink leading-relaxed">{c.content}</p>
+                <p className="text-gray-300 leading-relaxed">{c.content}</p>
               </div>
             </div>
           ))}

@@ -80,7 +80,7 @@ export function CategoryForm({ category, mode }: CategoryFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 text-white">
       {/* Header */}
       <div className="flex items-center gap-4">
         <Button
@@ -88,19 +88,19 @@ export function CategoryForm({ category, mode }: CategoryFormProps) {
           variant="ghost"
           size="icon"
           onClick={() => router.back()}
-          className="w-8 h-8"
+          className="w-8 h-8 text-gray-300 hover:text-white hover:bg-white/10"
         >
           <ArrowLeft className="w-4 h-4" />
         </Button>
         <div className="flex-1">
-          <h1 className="font-heading text-2xl font-bold text-ink">
+          <h1 className="font-heading text-2xl font-bold text-white">
             {isEdit ? "Sửa danh mục" : "Thêm danh mục mới"}
           </h1>
         </div>
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-gold hover:bg-gold/90 text-charcoal rounded-none font-semibold text-sm"
+          className="bg-[#E05638] hover:bg-[#E05638]/90 text-white rounded-xl font-extrabold text-xs px-5 py-2.5 shadow-[0_0_15px_rgba(224,86,56,0.4)] transition-all"
         >
           {isSubmitting ? (
             <>
@@ -118,38 +118,38 @@ export function CategoryForm({ category, mode }: CategoryFormProps) {
         <h2 className="font-extrabold text-white border-b border-white/10 pb-3 text-base">Thông tin danh mục</h2>
 
         <div>
-          <Label htmlFor="name">
-            Tên danh mục <span className="text-destructive">*</span>
+          <Label htmlFor="name" className="text-gray-300 text-xs font-bold">
+            Tên danh mục <span className="text-[#E05638]">*</span>
           </Label>
           <Input
             id="name"
             {...register("name")}
             placeholder="VD: Nendoroid"
-            className="mt-1.5"
+            className="mt-1.5 bg-[#0B0E17] border-white/15 text-white placeholder:text-gray-500 rounded-xl text-xs py-2.5 px-3.5"
           />
           {errors.name && (
-            <p className="text-destructive text-xs mt-1">{errors.name.message}</p>
+            <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="slug">
-            Slug <span className="text-destructive">*</span>
+          <Label htmlFor="slug" className="text-gray-300 text-xs font-bold">
+            Slug <span className="text-[#E05638]">*</span>
           </Label>
           <Input
             id="slug"
             {...register("slug")}
             placeholder="nendoroid"
-            className="mt-1.5 font-mono text-sm"
+            className="mt-1.5 font-mono text-xs bg-[#0B0E17] border-white/15 text-white placeholder:text-gray-500 rounded-xl py-2.5 px-3.5"
             onChange={(e) => {
               setSlugManuallyEdited(true);
               register("slug").onChange(e);
             }}
           />
           {errors.slug && (
-            <p className="text-destructive text-xs mt-1">{errors.slug.message}</p>
+            <p className="text-red-400 text-xs mt-1">{errors.slug.message}</p>
           )}
-          <p className="text-muted-foreground text-xs mt-1">
+          <p className="text-gray-400 text-xs mt-1">
             Slug dùng trong URL. Tự tạo từ tên, chỉnh tay nếu cần.
           </p>
         </div>

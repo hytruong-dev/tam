@@ -35,7 +35,7 @@ export default function RootLayout({
       lang="vi"
       className={`${playfairDisplay.variable} ${beVietnamPro.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body bg-ivory text-ink">
+      <body className="min-h-full flex flex-col font-body bg-[#0B0E17] text-gray-100 selection:bg-[#E05638] selection:text-white">
         {children}
         <Toaster position="top-right" richColors closeButton />
       </body>
