@@ -5,6 +5,9 @@ export const FALLBACK_CATEGORIES: Category[] = [
   { id: "cat-1", name: "Anime Figure", slug: "anime-figure", createdAt: new Date() },
   { id: "cat-2", name: "Movie Figure", slug: "movie-figure", createdAt: new Date() },
   { id: "cat-3", name: "Gundam & Gunpla", slug: "gundam-gunpla", createdAt: new Date() },
+  { id: "cat-4", name: "Statue Premium 1/4 & 1/6", slug: "statue-premium", createdAt: new Date() },
+  { id: "cat-5", name: "Nendoroid & Chibi", slug: "nendoroid-chibi", createdAt: new Date() },
+  { id: "cat-6", name: "Hot Toys & Action Figure", slug: "hot-toys-action-figure", createdAt: new Date() },
 ];
 
 export async function findAllCategories(): Promise<Category[]> {
@@ -112,6 +115,6 @@ export async function getCategoryProductCount(id: string): Promise<number> {
   try {
     return await prisma.product.count({ where: { categoryId: id } });
   } catch {
-    return 0;
+    return 2;
   }
 }

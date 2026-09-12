@@ -20,15 +20,17 @@ import { findProducts } from "@/lib/repositories/product.repository";
 import { findVideos } from "@/lib/repositories/video.repository";
 import { findAllCategories } from "@/lib/repositories/category.repository";
 import { findCommunityFeed } from "@/lib/repositories/community.repository";
+import { findAllOrders } from "@/lib/repositories/order.repository";
 import { formatPrice } from "@/lib/utils";
 
 export default async function AdminDashboardPage() {
-  const [{ products, total: totalProducts }, { videos, total: totalVideos }, categories, { posts }] =
+  const [{ products, total: totalProducts }, { videos, total: totalVideos }, categories, { posts }, orders] =
     await Promise.all([
       findProducts({ page: 1, limit: 5 }, true),
       findVideos({ limit: 4 }),
       findAllCategories(),
       findCommunityFeed({ limit: 4 }),
+      findAllOrders(),
     ]);
 
   const kpis = [
@@ -40,6 +42,15 @@ export default async function AdminDashboardPage() {
       color: "from-orange-500 to-red-600",
       textColor: "text-orange-400",
       href: "/admin/products",
+    },
+    {
+      title: "Đơn Đặt Hàng",
+      value: orders.length,
+      subtitle: "Khách mua Figure",
+      icon: Package,
+      color: "from-blue-500 to-indigo-600",
+      textColor: "text-blue-400",
+      href: "/admin/orders",
     },
     {
       title: "Video Review 4K",
@@ -58,15 +69,6 @@ export default async function AdminDashboardPage() {
       color: "from-amber-500 to-yellow-600",
       textColor: "text-amber-400",
       href: "/admin/categories",
-    },
-    {
-      title: "Bài Viết Diễn Đàn",
-      value: posts.length,
-      subtitle: "Cộng đồng Collector",
-      icon: MessageSquare,
-      color: "from-emerald-500 to-teal-600",
-      textColor: "text-emerald-400",
-      href: "/admin/community",
     },
   ];
 

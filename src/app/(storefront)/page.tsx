@@ -127,7 +127,7 @@ export default async function HomePage() {
                     </h3>
                   </div>
                   <Link
-                    href="/products/mgex-strike-freedom-gundam"
+                    href="/products/gundam-mgex-strike-freedom"
                     className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#E05638] transition-colors border border-white/20"
                   >
                     <ChevronRight className="w-5 h-5" />

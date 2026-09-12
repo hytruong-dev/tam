@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import {
   LayoutDashboard,
   Package,
+  ShoppingBag,
   Tag,
   Video,
   LogOut,
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
 
 const adminNav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { href: "/admin/orders", label: "Đơn hàng", icon: ShoppingBag },
   { href: "/admin/products", label: "Sản phẩm", icon: Package },
   { href: "/admin/categories", label: "Danh mục", icon: Tag },
   { href: "/admin/videos", label: "Video 4K", icon: Video },

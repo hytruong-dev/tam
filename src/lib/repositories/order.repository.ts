@@ -73,6 +73,52 @@ let MEMORY_ORDERS: Order[] = [
     createdAt: new Date("2026-09-11T08:30:00Z"),
     updatedAt: new Date("2026-09-11T08:30:00Z"),
   },
+  {
+    id: "ord-3",
+    orderNumber: "TT-20260912-090",
+    customerName: "Trần Bảo Long",
+    customerPhone: "0987654321",
+    customerEmail: "baolong.figure@gmail.com",
+    shippingAddress: "789 Hải Châu, Đã Nẵng",
+    paymentMethod: "VNPAY",
+    orderStatus: "COMPLETED",
+    totalAmount: 3600000,
+    items: [
+      {
+        productId: "p3",
+        productName: "Mô Hình Gundam MGEX 1/100 Strike Freedom",
+        imageUrl: "/images/hero-gundam.jpg",
+        price: 3600000,
+        quantity: 1,
+      },
+    ],
+    note: "Giao hỏa tốc buổi sáng",
+    createdAt: new Date("2026-09-12T09:15:00Z"),
+    updatedAt: new Date("2026-09-12T11:00:00Z"),
+  },
+  {
+    id: "ord-4",
+    orderNumber: "TT-20260912-091",
+    customerName: "Phạm Hải Đăng",
+    customerPhone: "0933221100",
+    customerEmail: "haidang.figure@gmail.com",
+    shippingAddress: "12 Nguyễn Huệ, Quận 1, TP. HCM",
+    paymentMethod: "MOMO",
+    orderStatus: "PENDING",
+    totalAmount: 2950000,
+    items: [
+      {
+        productId: "p4",
+        productName: "Mô Hình Naruto Uzumaki Sage Mode GEM Series",
+        imageUrl: "/images/naruto-community.png",
+        price: 2950000,
+        quantity: 1,
+      },
+    ],
+    note: "Vui lòng gọi trước khi giao 15 phút",
+    createdAt: new Date("2026-09-12T14:20:00Z"),
+    updatedAt: new Date("2026-09-12T14:20:00Z"),
+  },
 ];
 
 export async function findAllOrders(options?: { status?: OrderStatus; search?: string }): Promise<Order[]> {

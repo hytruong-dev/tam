@@ -1,47 +1,11 @@
-import { prisma } from "@/lib/prisma";
-import { Users, ShieldCheck } from "lucide-react";
+import { findAllUsers } from "@/lib/repositories/user.repository";
+import { Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Quản lý thành viên | ThienTam Admin" };
 
 export default async function AdminUsersPage() {
-  let users: Array<{
-    id: string;
-    email: string;
-    displayName: string;
-    avatarUrl: string | null;
-    role: string;
-    status: string;
-    createdAt: Date;
-  }> = [];
-
-  try {
-    users = await prisma.user.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 50,
-    });
-  } catch {
-    users = [
-      {
-        id: "u1",
-        email: "admin@thientamfigure.com",
-        displayName: "ThienTam Admin Studio",
-        avatarUrl: "https://api.dicebear.com/7.x/bottts/svg?seed=Admin",
-        role: "ADMIN",
-        status: "ACTIVE",
-        createdAt: new Date(),
-      },
-      {
-        id: "u2",
-        email: "collector1@gmail.com",
-        displayName: "MinhTu Collector",
-        avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=MinhTu",
-        role: "MEMBER",
-        status: "ACTIVE",
-        createdAt: new Date(),
-      },
-    ];
-  }
+  const users = await findAllUsers();
 
   return (
     <div className="space-y-6">
@@ -51,7 +15,7 @@ export default async function AdminUsersPage() {
             <Users className="w-4 h-4" /> QUẢN LÝ THÀNH VIÊN
           </div>
           <h1 className="font-heading text-2xl font-extrabold text-white">Danh Sách Collector Registered</h1>
-          <p className="text-gray-400 text-xs">Tổng cộng {users.length} tài khoản thành viên trong hệ thống</p>
+          <p className="text-gray-400 text-xs">Tổng cộng {users.length} tài khoản thành viên trong hệ thống Studio</p>
         </div>
       </div>
 
@@ -84,6 +48,8 @@ export default async function AdminUsersPage() {
                       className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded border ${
                         u.role === "ADMIN"
                           ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
+                          : u.role === "MODERATOR"
+                          ? "bg-purple-500/20 text-purple-400 border-purple-500/30"
                           : "bg-white/10 text-gray-300 border-white/10"
                       }`}
                     >

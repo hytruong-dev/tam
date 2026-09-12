@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
+import { ProductDetailClient } from "@/components/product/ProductDetailClient";
 import { getProductBySlug, getRelatedProducts } from "@/lib/services/product.service";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import type { Metadata } from "next";
-import { ShoppingBag, CheckCircle, XCircle, Play, Tag, ShieldCheck, Box, Sparkles, Truck, Award, Heart, MessageCircle } from "lucide-react";
+import { CheckCircle, XCircle, Play, Box, Sparkles } from "lucide-react";
 
 interface ProductDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -178,23 +179,16 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 pt-2">
-                <button
-                  disabled={!inStock}
-                  className="flex-1 min-w-[200px] bg-[#E05638] hover:bg-[#E05638]/90 text-white font-extrabold rounded-xl py-3.5 px-6 text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(224,86,56,0.4)] transition-all disabled:opacity-50"
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  {inStock ? "LIÊN HỆ ĐẶT MÔ HÌNH" : "TẠM HẾT HÀNG"}
-                </button>
-                <Link
-                  href="/community"
-                  className="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold rounded-xl py-3.5 px-5 text-sm flex items-center justify-center gap-2 transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Tư Vấn Collector
-                </Link>
-              </div>
+              {/* Action Buttons & Reviews */}
+              <ProductDetailClient
+                product={{
+                  id: product.id,
+                  name: product.name,
+                  price: Number(product.price),
+                  imageUrl: product.imageUrl,
+                  stock: product.stock,
+                }}
+              />
             </div>
           </div>
         </div>
